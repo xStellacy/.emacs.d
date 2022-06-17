@@ -1,8 +1,6 @@
 #+STARTUP: overview
 * Interface Tweaks
 #+BEGIN_SRC emacs-lisp
-      (setq inhibit-startup-message t)
-      (set-face-attribute 'default nil :font "Monospace" :height 105)
 
 
       (tool-bar-mode -1)
@@ -12,7 +10,8 @@
       (fset 'yes-or-no-p 'y-or-n-p)
       (global-set-key (kbd "<f6>") 'revert-buffer)
       ;;(global-set-key (kbd "C-c c") (lambda () (interactive) (save-buffer) (quickrun-shell)))
-      (global-set-key (kbd "C-c c") 'recompile)
+;;      (global-set-key (kbd "C-c c") 'recompile)
+      (global-set-key (kbd "C-c c") 'rust-compile)
       (setq compilation-ask-about-save nil)
       (global-set-key (kbd "C-<") 'shrink-window-horizontally)
       (global-set-key (kbd "C->") 'enlarge-window-horizontally)
@@ -31,7 +30,7 @@
 
        (load-theme 'xresources t)
        (set-frame-parameter (selected-frame) 'alpha-background 0.95)
-      (load-theme 'xresources t)
+;;      (load-theme 'xresources t)
 
 
   (setq modus-themes-load-vivendi t
@@ -151,9 +150,9 @@
   (modus-themes-load-vivendi) 
   (define-key global-map (kbd "<f5>") #'modus-themes-toggle)
   (load-theme 'xresources t)
-  (load-theme 'xresources t)
-  (load-theme 'xresources t)
-  (load-theme 'xresources t)
+;;  (load-theme 'xresources t)
+;;  (load-theme 'xresources t)
+;;  (load-theme 'xresources t)
 
 #+END_SRC
 
@@ -190,94 +189,100 @@
  #+end_src
 * Org mode
   #+BEGIN_SRC emacs-lisp
-                      (use-package org-bullets
-                      :ensure t
-                      :config
-                      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-                      (add-hook 'org-mode-hook 'org-display-inline-images)
+                          (use-package org-bullets
+                          :ensure t
+                          :config
+                          (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+                          (add-hook 'org-mode-hook 'org-display-inline-images)
 
-                      (custom-set-variables
-                       '(org-export-html-postamble nil)
-                          ; '(org-hide-leading-stars t)
-                           '(org-startup-folded (quote overview))
-                           '(org-startup-indented t)
-                           )
+                          (custom-set-variables
+                           '(org-export-html-postamble nil)
+                            ;; '(org-hide-leading-stars t)
+                               '(org-startup-folded (quote overview))
+                               '(org-startup-indented t)
+                               )
 
-                      (setq org-file-apps
-                                  (append '(
-                                    ("\\.pdf\\'" . "evince %s")
-                                    ) org-file-apps ))
+                          (setq org-file-apps
+                                      (append '(
+                                        ("\\.pdf\\'" . "evince %s")
+                                        ) org-file-apps ))
 
-                          (global-set-key "\C-ca" 'org-agenda)
-                          (global-set-key (kbd "C-c l") #'org-store-link)
+                              (global-set-key "\C-ca" 'org-agenda)
+                              (global-set-key (kbd "C-c l") #'org-store-link)
 
-                          (setq org-agenda-custom-commands
-                          '(("c" "Simple agenda view"
-                          ((agenda "")
-                          (alltodo "")))))
+                              (setq org-agenda-custom-commands
+                              '(("c" "Simple agenda view"
+                              ((agenda "")
+                              (alltodo "")))))
 
-                        (defadvice org-capture-finalize 
-                        (after delete-capture-frame activate)  
-                      "Advise capture-finalize to close the frame"  
-                      (if (equal "capture" (frame-parameter nil 'name))  
-                      (delete-frame)))
+                            (defadvice org-capture-finalize 
+                            (after delete-capture-frame activate)  
+                          "Advise capture-finalize to close the frame"  
+                          (if (equal "capture" (frame-parameter nil 'name))  
+                          (delete-frame)))
 
-                      (defadvice org-capture-destroy 
-                          (after delete-capture-frame activate)  
-                      "Advise capture-destroy to close the frame"  
-                      (if (equal "capture" (frame-parameter nil 'name))  
-                      (delete-frame)))  
+                          (defadvice org-capture-destroy 
+                              (after delete-capture-frame activate)  
+                          "Advise capture-destroy to close the frame"  
+                          (if (equal "capture" (frame-parameter nil 'name))  
+                          (delete-frame)))  
 
-                      (use-package noflet
-                      :ensure t )
-                      (defun make-capture-frame ()
-                      "Create a new frame and run org-capture."
-                      (interactive)
-                      (make-frame '((name . "capture")))
-                      (select-frame-by-name "capture")
-                      (delete-other-windows)
-                      (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-                          (org-capture)))
-                      (setq org-src-window-setup 'current-window)
+                          (use-package noflet
+                          :ensure t )
+                          (defun make-capture-frame ()
+                          "Create a new frame and run org-capture."
+                          (interactive)
+                          (make-frame '((name . "capture")))
+                          (select-frame-by-name "capture")
+                          (delete-other-windows)
+                          (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
+                              (org-capture)))
+                          (setq org-src-window-setup 'current-window)
 
-                    (custom-set-faces
-                  '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
-                  '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
-                  '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
-                  '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
-                  '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
-                )
+    ;;                    (custom-set-faces
+    ;;                  '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+    ;;                  '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+    ;;                  '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
+    ;;                  '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
+    ;;                  '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+    ;;                )
 
-    (require 'color)
-    (set-face-attribute 'org-block nil :background
-                        (color-darken-name
-                         (face-attribute 'default :background) 1))
-    (setq org-image-actual-width nil)
+        (require 'color)
+        (set-face-attribute 'org-block nil :background
+                            (color-darken-name
+                             (face-attribute 'default :background) 1))
+        (setq org-image-actual-width nil)
 
-(add-hook 'org-mode-hook (lambda ()
-                            (setq buffer-face-mode-face '(:family "Hack" :height 130))
-                            (buffer-face-mode)))
-      (add-hook 'org-mode-hook (lambda ()
-                            (setq-default line-spacing 6)))
+    (add-hook 'org-mode-hook (lambda ()
+                                (setq buffer-face-mode-face '(:family "Hack" :height 130))
+                                (buffer-face-mode)))
+          (add-hook 'org-mode-hook (lambda ()
+                                (setq-default line-spacing 6)))
 
-(defvar my-hide-org-meta-line-p nil)
-  (defun my-hide-org-meta-line ()
-    (interactive)
-    (setq my-hide-org-meta-line-p t)
-    (set-face-attribute 'org-meta-line nil
-			:foreground (face-attribute 'default :background)))
-  (defun my-show-org-meta-line ()
-    (interactive)
-    (setq my-hide-org-meta-line-p nil)
-    (set-face-attribute 'org-meta-line nil :foreground nil))
+    (defvar my-hide-org-meta-line-p nil)
+      (defun my-hide-org-meta-line ()
+        (interactive)
+        (setq my-hide-org-meta-line-p t)
+        (set-face-attribute 'org-meta-line nil
+                            :foreground (face-attribute 'default :background)))
+      (defun my-show-org-meta-line ()
+        (interactive)
+        (setq my-hide-org-meta-line-p nil)
+        (set-face-attribute 'org-meta-line nil :foreground nil))
 
-  (defun my-toggle-org-meta-line ()
-    (interactive)
-    (if my-hide-org-meta-line-p
-	(my-show-org-meta-line) (my-hide-org-meta-line)))
+      (defun my-toggle-org-meta-line ()
+        (interactive)
+        (if my-hide-org-meta-line-p
+            (my-show-org-meta-line) (my-hide-org-meta-line)))
 
-  (add-hook 'org-tree-slide-play-hook #'my-hide-org-meta-line)
-  (add-hook 'org-tree-slide-stop-hook #'my-show-org-meta-line)
+      (add-hook 'org-tree-slide-play-hook #'my-hide-org-meta-line)
+      (add-hook 'org-tree-slide-stop-hook #'my-show-org-meta-line)
+
+      (add-to-list 'load-path "~/.emacs.d/org-roam")
+      (require 'org-roam)
+    (setq org-roam-directory (file-truename "~/org-roam"))
+    (org-roam-db-autosync-mode)
+
                       
   #+END_SRC
 
@@ -359,19 +364,19 @@
 ;;  #+END_SRC
 
 * Reveal.js
-  #+BEGIN_SRC emacs-lisp
-    (use-package ox-reveal
-    :ensure ox-reveal)
+ ;; #+BEGIN_SRC emacs-lisp
+ ;;   (use-package ox-reveal
+ ;;   :ensure ox-reveal)
 
-    (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
-    (setq org-reveal-mathjax t)
+ ;;   (setq org-reveal-root "http://cdn.jsdelivr.net/reveal.js/3.0.0/")
+ ;;   (setq org-reveal-mathjax t)
 
-    (use-package htmlize
-    :ensure t)
-  #+END_SRC
+ ;;   (use-package htmlize
+ ;;   :ensure t)
+ ;; #+END_SRC
 
-  #+RESULTS:
-  : t
+ ;; #+RESULTS:
+ ;; : t
   
 * Flycheck
   #+BEGIN_SRC emacs-lisp
@@ -382,24 +387,24 @@
 
   #+END_SRC
 * Python
-  #+BEGIN_SRC emacs-lisp
+;;  #+BEGIN_SRC emacs-lisp
 
-  (setq py-python-command "python3")
-  (setq python-shell-interpreter "python3")
+;;  (setq py-python-command "python3")
+;;  (setq python-shell-interpreter "python3")
 
-    (use-package jedi
-      :ensure t
-      :init
-      (add-hook 'python-mode-hook 'jedi:setup)
-      (add-hook 'python-mode-hook 'jedi:ac-setup))
+;;    (use-package jedi
+;;      :ensure t
+;;      :init
+;;      (add-hook 'python-mode-hook 'jedi:setup)
+;;      (add-hook 'python-mode-hook 'jedi:ac-setup))
       
 
-      (use-package elpy
-      :ensure t
-      :config 
-      (elpy-enable))
+;;      (use-package elpy
+;;      :ensure t
+;;      :config 
+;;      (elpy-enable))
 
-  #+END_SRC
+;;  #+END_SRC
 * Yasnippet
   #+BEGIN_SRC emacs-lisp
     (use-package yasnippet
@@ -486,8 +491,8 @@
   ;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
   ;; This line actually replaces Emacs' entire narrowing keymap, that's
   ;; how much I like this command. Only copy it if that's what you want.
-  (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
-  
+;;  (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
+ (require 'cl) 
   #+END_SRC
 
 
@@ -531,108 +536,105 @@
    : t
    
 * Better shell
-#+begin_src emacs-lisp
-(use-package better-shell
-    :ensure t
-    :bind (("C-'" . better-shell-shell)
-           ("C-;" . better-shell-remote-open)))
-#+end_src
+;;#+begin_src emacs-lisp
+;;(use-package better-shell
+;;    :ensure t
+;;    :bind (("C-'" . better-shell-shell)
+;;           ("C-;" . better-shell-remote-open)))
+;;#+end_src
 
-* eshell stuff
-#+begin_src emacs-lisp
-(use-package shell-switcher
-  :ensure t
-  :config 
-  (setq shell-switcher-mode t)
-  :bind (("C-'" . shell-switcher-switch-buffer)
-	   ("C-x 4 '" . shell-switcher-switch-buffer-other-window)
-	   ("C-M-'" . shell-switcher-new-shell)))
-
-
-;; Visual commands
-(setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
-				 "ncftp" "pine" "tin" "trn" "elm" "vim"
-				 "nmtui" "alsamixer" "htop" "el" "elinks"
-				 ))
-(setq eshell-visual-subcommands '(("git" "log" "diff" "show")))
-(setq eshell-list-files-after-cd t)
-(defun eshell-clear-buffer ()
-  "Clear terminal"
-  (interactive)
-  (let ((inhibit-read-only t))
-    (erase-buffer)
-    (eshell-send-input)))
-(add-hook 'eshell-mode-hook
-	    '(lambda()
-	       (local-set-key (kbd "C-l") 'eshell-clear-buffer)))
-
-(defun eshell/magit ()
-  "Function to open magit-status for the current directory"
-  (interactive)
-  (magit-status default-directory)
-  nil)
-
- (defcustom dotemacs-eshell/prompt-git-info
-  t
-  "Turns on additional git information in the prompt."
-  :group 'dotemacs-eshell
-  :type 'boolean)
-
-;; (epe-colorize-with-face "abc" 'font-lock-comment-face)
-(defmacro epe-colorize-with-face (str face)
-  `(propertize ,str 'face ,face))
-
-(defface epe-venv-face
-  '((t (:inherit font-lock-comment-face)))
-  "Face of python virtual environment info in prompt."
-  :group 'epe)
-
-  (setq eshell-prompt-function
-      (lambda ()
-        (concat (propertize (abbreviate-file-name (eshell/pwd)) 'face 'eshell-prompt)
-                (when (and dotemacs-eshell/prompt-git-info
-                           (fboundp #'vc-git-branches))
-                  (let ((branch (car (vc-git-branches))))
-                    (when branch
-                      (concat
-                       (propertize " [" 'face 'font-lock-keyword-face)
-                       (propertize branch 'face 'font-lock-function-name-face)
-                       (let* ((status (shell-command-to-string "git status --porcelain"))
-                              (parts (split-string status "\n" t " "))
-                              (states (mapcar #'string-to-char parts))
-                              (added (count-if (lambda (char) (= char ?A)) states))
-                              (modified (count-if (lambda (char) (= char ?M)) states))
-                              (deleted (count-if (lambda (char) (= char ?D)) states)))
-                         (when (> (+ added modified deleted) 0)
-                           (propertize (format " +%d ~%d -%d" added modified deleted) 'face 'font-lock-comment-face)))
-                       (propertize "]" 'face 'font-lock-keyword-face)))))
-                (when (and (boundp #'venv-current-name) venv-current-name)
-                  (concat 
-                    (epe-colorize-with-face " [" 'epe-venv-face) 
-                    (propertize venv-current-name 'face `(:foreground "#2E8B57" :slant italic))
-                    (epe-colorize-with-face "]" 'epe-venv-face))) 
-                (propertize " $ " 'face 'font-lock-constant-face))))
-#+end_src
-
-#+RESULTS:
-| lambda | nil | (concat (propertize (abbreviate-file-name (eshell/pwd)) 'face 'eshell-prompt) (when (and dotemacs-eshell/prompt-git-info (fboundp #'vc-git-branches)) (let ((branch (car (vc-git-branches)))) (when branch (concat (propertize  [ 'face 'font-lock-keyword-face) (propertize branch 'face 'font-lock-function-name-face) (let* ((status (shell-command-to-string git status --porcelain)) (parts (split-string status |
+;;* eshell stuff
+;;#+begin_src emacs-lisp
+;;(use-package shell-switcher
+;;  :ensure t
+;;  :config 
+;;  (setq shell-switcher-mode t)
+;;  :bind (("C-'" . shell-switcher-switch-buffer)
+;;	   ("C-x 4 '" . shell-switcher-switch-buffer-other-window)
+;;	   ("C-M-'" . shell-switcher-new-shell)))
+;;
+;;
+;;;; Visual commands
+;;(setq eshell-visual-commands '("vi" "screen" "top" "less" "more" "lynx"
+;;				 "ncftp" "pine" "tin" "trn" "elm" "vim"
+;;				 "nmtui" "alsamixer" "htop" "el" "elinks"
+;;				 ))
+;;(setq eshell-visual-subcommands '(("git" "log" "diff" "show")))
+;;(setq eshell-list-files-after-cd t)
+;;defun eshell-clear-buffer ()
+;;  "Clear terminal"
+;;  (interactive)
+;;  (let ((inhibit-read-only t))
+;;    (erase-buffer)
+;;    (eshell-send-input)))
+;;(add-hook 'eshell-mode-hook
+;;	    '(lambda()
+;;	       (local-set-key (kbd "C-l") 'eshell-clear-buffer)))
+;;
+;;(defun eshell/magit ()
+;;  "Function to open magit-status for the current directory"
+;;  (interactive)
+;;  (magit-status default-directory)
+;;  nil)
+;;
+;; (defcustom dotemacs-eshell/prompt-git-info
+;;  t
+;;  "Turns on additional git information in the prompt."
+;;  :group 'dotemacs-eshell
+;;  :type 'boolean)
+;;
+;;;; (epe-colorize-with-face "abc" 'font-lock-comment-face)
+;;(defmacro epe-colorize-with-face (str face)
+;;  `(propertize ,str 'face ,face))
+;;
+;;(defface epe-venv-face
+;;  '((t (:inherit font-lock-comment-face)))
+;;  "Face of python virtual environment info in prompt."
+;;  :group 'epe)
+;;
+;;  (setq eshell-prompt-function
+;;      (lambda ()
+;;        (concat (propertize (abbreviate-file-name (eshell/pwd)) 'face 'eshell-prompt)
+;;                (when (and dotemacs-eshell/prompt-git-info
+;;                           (fboundp #'vc-git-branches))
+;;                  (let ((branch (car (vc-git-branches))))
+;;                    (when branch
+;;                      (concat
+;;                       (propertize " [" 'face 'font-lock-keyword-face)
+;;                       (propertize branch 'face 'font-lock-function-name-face)
+;;                       (let* ((status (shell-command-to-string "git status --porcelain"))
+;;                              (parts (split-string status "\n" t " "))
+;;                              (states (mapcar #'string-to-char parts))
+;;                              (added (count-if (lambda (char) (= char ?A)) states))
+;;                              (modified (count-if (lambda (char) (= char ?M)) states))
+;;                              (deleted (count-if (lambda (char) (= char ?D)) states)))
+;;                         (when (> (+ added modified deleted) 0)
+;;                           (propertize (format " +%d ~%d -%d" added modified deleted) 'face 'font-lock-comment-face)))
+;;                       (propertize "]" 'face 'font-lock-keyword-face)))))
+;;                (when (and (boundp #'venv-current-name) venv-current-name)
+;;                  (concat 
+;;                    (epe-colorize-with-face " [" 'epe-venv-face) 
+;;                    (propertize venv-current-name 'face `(:foreground "#2E8B57" :slant italic))
+;;                    (epe-colorize-with-face "]" 'epe-venv-face))) 
+;;                (propertize " $ " 'face 'font-lock-constant-face))))
+;;#+end_src
 
 * Elfeed
-#+begin_src emacs-lisp
-  (use-package elfeed
-  :ensure t
+;;#+begin_src emacs-lisp
+;;  (use-package elfeed
+;;  :ensure t
 
 
-  :bind (:map elfeed-search-mode-map
-	      ("q" . bjm/elfeed-save-db-and-bury)
-	      ("Q" . bjm/elfeed-save-db-and-bury)
-	      ("m" . elfeed-toggle-star)
-	      ("M" . elfeed-toggle-star)
-	      )
-  )
+;;  :bind (:map elfeed-search-mode-map
+;;	      ("q" . bjm/elfeed-save-db-and-bury)
+;;	      ("Q" . bjm/elfeed-save-db-and-bury)
+;;	      ("m" . elfeed-toggle-star)
+;;	      ("M" . elfeed-toggle-star)
+;;	      )
+;;  )
 
 
-#+end_src
+;;#+end_src
 
 * Hydra
 #+BEGIN_SRC emacs-lisp
@@ -685,17 +687,17 @@
 
 #+RESULTS:
 
-* c++
-#+begin_src emacs-lisp
-  (use-package ggtags
-    :ensure t
-    :config
-    (add-hook 'c-mode-common-hook
-              (lambda ()
-                (when (derived-mode-p 'c-mode 'c++-mode)
-                  (ggtags-mode 1)))))
-
-#+end_src
+;;* c++
+;;#+begin_src emacs-lisp
+;;  (use-package ggtags
+;;    :ensure t
+;;    :config
+;;    (add-hook 'c-mode-common-hook
+;;              (lambda ()
+;;                (when (derived-mode-p 'c-mode 'c++-mode)
+;;                  (ggtags-mode 1)))))
+;;
+;;#+end_src
 
 #+RESULTS:
 : t
@@ -777,11 +779,8 @@
       (treemacs-filewatch-mode t))
     :bind
     (:map global-map
-          ([f8]        . treemacs-toggle)
-          ([f9]        . treemacs-projectile-toggle)
-          ("<C-M-tab>" . treemacs-toggle)
+          ([f8]        . treemacs)
           ("M-0"       . treemacs-select-window)
-          ("C-c 1"     . treemacs-delete-other-windows)
         ))
   (use-package treemacs-projectile
     :defer t
@@ -803,74 +802,74 @@
 
 #+RESULTS:
 * perskeymap
-#+begin_src emacs-lisp
-    ;; set up my own map
-  (define-prefix-command 'z-map)
-  (global-set-key (kbd "C-1") 'z-map)
+;;#+begin_src emacs-lisp
+;;    ;; set up my own map
+;;  (define-prefix-command 'z-map)
+;;  (global-set-key (kbd "C-1") 'z-map)
+;;
+;;
+;;  (define-key z-map (kbd "y") 'aya-create)
+;;  (define-key z-map (kbd "e") 'aya-expand)
+;;  (global-set-key (kbd "C-c m") 'menu-bar-mode)
 
 
-  (define-key z-map (kbd "y") 'aya-create)
-  (define-key z-map (kbd "e") 'aya-expand)
-  (global-set-key (kbd "C-c m") 'menu-bar-mode)
 
-
-
-#+end_src
+;;#+end_src
 
 #+RESULTS:
 | lambda | nil | (interactive) | (save-buffer) | (quickrun-shell) |
 
 * git
-#+BEGIN_SRC emacs-lisp
-  (use-package magit
-    :ensure t
-    :init
-    (progn
-    (bind-key "C-x g" 'magit-status)
-    ))
-
-    (use-package git-gutter
-    :ensure t
-    :init
-    (global-git-gutter-mode +1))
-
-    (global-set-key (kbd "M-g M-g") 'hydra-git-gutter/body)
-
-
-    (use-package git-timemachine
-    :ensure t
-    )
-  (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
-                              :hint nil)
-    "
-  Git gutter:
-    _j_: next hunk        _s_tage hunk     _q_uit
-    _k_: previous hunk    _r_evert hunk    _Q_uit and deactivate git-gutter
-    ^ ^                   _p_opup hunk
-    _h_: first hunk
-    _l_: last hunk        set start _R_evision
-  "
-    ("j" git-gutter:next-hunk)
-    ("k" git-gutter:previous-hunk)
-    ("h" (progn (goto-char (point-min))
-                (git-gutter:next-hunk 1)))
-    ("l" (progn (goto-char (point-min))
-                (git-gutter:previous-hunk 1)))
-    ("s" git-gutter:stage-hunk)
-    ("r" git-gutter:revert-hunk)
-    ("p" git-gutter:popup-hunk)
-    ("R" git-gutter:set-start-revision)
-    ("q" nil :color blue)
-    ("Q" (progn (git-gutter-mode -1)
-                ;; git-gutter-fringe doesn't seem to
-                ;; clear the markup right away
-                (sit-for 0.1)
-                (git-gutter:clear))
-         :color blue))
-
-
-
-#+END_SRC
+;;#+BEGIN_SRC emacs-lisp
+;;  (use-package magit
+;;    :ensure t
+;;    :init
+;;    (progn
+;;    (bind-key "C-x g" 'magit-status)
+;;    ))
+;;
+;;    (use-package git-gutter
+;;    :ensure t
+;;    :init
+;;    (global-git-gutter-mode +1))
+;;
+;;    (global-set-key (kbd "M-g M-g") 'hydra-git-gutter/body)
+;;
+;;
+;;    (use-package git-timemachine
+;;    :ensure t
+;;    )
+;;  (defhydra hydra-git-gutter (:body-pre (git-gutter-mode 1)
+;;                              :hint nil)
+;;    "
+;;  Git gutter:
+;;    _j_: next hunk        _s_tage hunk     _q_uit
+;;    _k_: previous hunk    _r_evert hunk    _Q_uit and deactivate git-gutter
+;;    ^ ^                   _p_opup hunk
+;;    _h_: first hunk
+;;    _l_: last hunk        set start _R_evision
+;;  "
+;;    ("j" git-gutter:next-hunk)
+;;    ("k" git-gutter:previous-hunk)
+;;    ("h" (progn (goto-char (point-min))
+;;                (git-gutter:next-hunk 1)))
+;;    ("l" (progn (goto-char (point-min))
+;;                (git-gutter:previous-hunk 1)))
+;;    ("s" git-gutter:stage-hunk)
+;;    ("r" git-gutter:revert-hunk)
+;;    ("p" git-gutter:popup-hunk)
+;;    ("R" git-gutter:set-start-revision)
+;;    ("q" nil :color blue)
+;;    ("Q" (progn (git-gutter-mode -1)
+;;                ;; git-gutter-fringe doesn't seem to
+;;                ;; clear the markup right away
+;;                (sit-for 0.1)
+;;                (git-gutter:clear))
+;;         :color blue))
+;;
+;;
+;;
+;;#+END_SRC
 
 #+RESULTS:
 : hydra-git-gutter/body
@@ -887,7 +886,7 @@
     (setq lsp t)
     (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
     :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
-    :hook ((python-mode c-mode java-mode c++-mode) . lsp))
+    :hook ((python-mode c-mode java-mode c++-mode php-mode) . lsp))
   (add-hook 'prog-mode-hool #'lsp)
 
 
@@ -930,7 +929,7 @@
 :ensure t
 :config
 (setq company-idle-delay 0)
-(setq company-minimum-prefix-length 3)
+(setq company-minimum-prefix-length 1)
 
 (global-company-mode t)
 )
@@ -945,14 +944,14 @@
 #+BEGIN_SRC emacs-lisp
 
 
-        (use-package virtualenvwrapper
+;;        (use-package virtualenvwrapper
          ; :ensure t
-          :config
-          (venv-initialize-interactive-shells)
-          (venv-initialize-eshell))
+;;          :config
+;;          (venv-initialize-interactive-shells)
+;;          (venv-initialize-eshell))
  
-(venv-workon "p3")
-(setq lsp-python-executable-cmd "python")
+;;(venv-workon "p3")
+;;(setq lsp-python-executable-cmd "python")
 
 #+END_SRC
 
@@ -1060,14 +1059,14 @@
 #+end_src
 * PHP
 #+begin_src emacs-lisp
-  (use-package 'flymake-php
-  :ensure t
-  :config)
+;  (use-package 'flymake-php
+;  :ensure t
+;  :config)
   (add-hook 'php-mode-hook 'flymake-php-load)
 
   (add-hook 'php-mode-hook
             '(lambda ()
-               (auto-complete-mode t)
+              ; (auto-complete-mode t)
                (require 'ac-php)
                (setq ac-sources '(ac-source-php))
                (yas-global-mode 1)
@@ -1076,17 +1075,53 @@
                  'ac-php-find-symbol-at-point)
                (define-key php-mode-map (kbd "C-t")
                  'ac-php-location-stack-back)))
+
+
+
+
 #+end_src
+* Stupid discord thing
+#+BEGIN_SRC emacs-lisp
+(require 'elcord)
+(elcord-mode)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(elcord-mode t nil (elcord))
+ '(elcord-use-major-mode-as-main-icon t)
+ ;;(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ ;;)
+ )
+#+END_SRC
 
 * Multi-web mode
 #+begin_src emacs-lisp
-  (require 'multi-web-mode)
-(setq mweb-default-major-mode 'html-mode)
-(setq mweb-tags 
-  '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-    (js-mode  "<script[^>]*>" "</script>")
-    (css-mode "<style[^>]*>" "</style>")))
-(setq mweb-filename-extensions '("php" "htm" "html" "ctp" 
-                                 "phtml" "php4" "php5"))
-(multi-web-global-mode 1) 
+    (require 'multi-web-mode)
+  (setq mweb-default-major-mode 'html-mode)
+  (setq mweb-tags 
+    '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+      (js-mode  "<script[^>]*>" "</script>")
+      (css-mode "<style[^>]*>" "</style>")))
+  (setq mweb-filename-extensions '("php" "htm" "html" "ctp" 
+                                   "phtml" "php4" "php5"))
+#+end_src
+
+* Rust
+#+begin_src emacs-lisp
+  (add-hook 'rust-mode-hook
+          (lambda () (setq indent-tabs-mode nil)))
+
+  (setq rust-format-on-save t)
+
+  (add-hook 'rust-mode-hook
+          (lambda () (prettify-symbols-mode)))
+
+;; (define-key rust-mode (kbd "C-c C-c") 'rust-run)
+
 #+end_src
