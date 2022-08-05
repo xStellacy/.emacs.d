@@ -1,25 +1,33 @@
 #+STARTUP: overview
 * Interface Tweaks
 #+BEGIN_SRC emacs-lisp
-  (save-place-mode 1)
-        (fset 'yes-or-no-p 'y-or-n-p)
-        (global-set-key (kbd "<f6>") 'revert-buffer)
-        ;;(global-set-key (kbd "C-c c") (lambda () (interactive) (save-buffer) (quickrun-shell)))
-        (global-set-key (kbd "C-c c") 'recompile)
-  ;;      (global-set-key (kbd "C-c c") 'rust-compile)
-        (setq compilation-ask-about-save nil)
-        (global-set-key (kbd "C-.") 'shrink-window-horizontally)
-        (global-set-key (kbd "C-,") 'enlarge-window-horizontally)
-        (global-set-key (kbd "C->") 'shrink-window)
-        (global-set-key (kbd "C-<") 'enlarge-window)
-        (setq quickrun-focus-p nil)
-        (setq even-window-heights nil)
-    (setq compile-command "g++ main.cpp && ./a.out")
-    (setq compilation-scroll-output nil)
-    (setq org-hide-emphasis-markers t)
-    (setq markdown-toggle-inline-images t)
-  (setq markdown-display-remote-images t)
-   '(compilation-scroll-output t)  
+     (save-place-mode 1)
+           (fset 'yes-or-no-p 'y-or-n-p)
+           (global-set-key (kbd "<f6>") 'revert-buffer)
+           ;;(global-set-key (kbd "C-c c") (lambda () (interactive) (save-buffer) (quickrun-shell)))
+           (global-set-key (kbd "C-c c") 'recompile)
+     ;
+                                           ;      (global-set-key (kbd "C-c c") 'rust-compile)
+           (setq compilation-ask-about-save nil)
+           (global-set-key (kbd "C-.") 'shrink-window-horizontally)
+           (global-set-key (kbd "C-,") 'enlarge-window-horizontally)
+           (global-set-key (kbd "C->") 'shrink-window)
+           (global-set-key (kbd "C-<") 'enlarge-window)
+           (setq quickrun-focus-p nil)
+           (setq even-window-heights nil)
+      ;; (setq compile-command "g++ main.cpp && ./a.out")
+       (setq compile-command "gcc main.c && ./a.out")
+       (setq compilation-scroll-output nil)
+       (setq org-hide-emphasis-markers t)
+       (setq markdown-toggle-inline-images t)
+     (setq markdown-display-remote-images t)
+      '(compilation-scroll-output t)
+    (setq ring-bell-function 'ignore)
+    (setq rainbow-mode t)
+    (global-visual-line-mode 1)
+    (setq global-linum-mode t)
+  (set-face-attribute 'default nil :font "JetBrains Mono" :height 110)
+ (global-set-key (kbd "C-x g") 'ripgrep-regexp)
 #+END_SRC
 * Transparency and Theme
 #+BEGIN_SRC emacs-lisp
@@ -31,7 +39,7 @@
             modus-themes-italic-constructs t
             modus-themes-bold-constructs nil
             modus-themes-mixed-fonts nil
-            modus-themes-subtle-line-numbers nil
+;;            modus-themes-subtle-line-numbers nil
             modus-themes-intense-mouseovers nil
             modus-themes-deuteranopia t
             modus-themes-tabs-accented t
@@ -123,175 +131,221 @@
         (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
         (add-hook 'org-mode-hook 'org-display-inline-images)
 
-        (custom-set-variables
-         '(org-export-html-postamble nil)
-          ;; '(org-hide-leading-stars t)
-             '(org-startup-folded (quote overview))
-             '(org-startup-indented t)
-             )
+    (custom-set-variables
+     '(org-export-html-postamble nil)
+      ;; '(org-hide-leading-stars t)
+      '(org-startup-folded (quote overview))
+      '(org-startup-indented t)
+      )
 
-        (setq org-file-apps
-                    (append '(
-                      ("\\.pdf\\'" . "evince %s")
-                      ) org-file-apps ))
+     (setq org-file-apps
+       (append '(
+         ("\\.pdf\\'" . "evince %s")
+         ) org-file-apps ))
 
-            (global-set-key "\C-ca" 'org-agenda)
-            (global-set-key (kbd "C-c l") #'org-store-link)
+         (global-set-key "\C-ca" 'org-agenda)
+         (global-set-key (kbd "C-c l") #'org-store-link)
 
-              (setq org-agenda-custom-commands
-              '(("c" "Simple agenda view"
-              ((agenda "")
-              (alltodo "")))))
+           (setq org-agenda-custom-commands
+           '(("c" "Simple agenda view"
+           ((agenda "")
+           (alltodo "")))))
 
-          (defadvice org-capture-finalize
-          (after delete-capture-frame activate)
-        "Advise capture-finalize to close the frame"
-        (if (equal "capture" (frame-parameter nil 'name))
-        (delete-frame)))
+       (defadvice org-capture-finalize
+       (after delete-capture-frame activate)
+     "Advise capture-finalize to close the frame"
+     (if (equal "capture" (frame-parameter nil 'name))
+     (delete-frame)))
 
-        (defadvice org-capture-destroy
-            (after delete-capture-frame activate)
-        "Advise capture-destroy to close the frame"
-        (if (equal "capture" (frame-parameter nil 'name))
-        (delete-frame)))
+     (defadvice org-capture-destroy
+         (after delete-capture-frame activate)
+     "Advise capture-destroy to close the frame"
+     (if (equal "capture" (frame-parameter nil 'name))
+     (delete-frame)))
 
-        (use-package noflet
-        :ensure t )
-        (defun make-capture-frame ()
-        "Create a new frame and run org-capture."
+     (use-package noflet
+     :ensure t )
+     (defun make-capture-frame ()
+     "Create a new frame and run org-capture."
+     (interactive)
+     (make-frame '((name . "capture")))
+     (select-frame-by-name "capture")
+     (delete-other-windows)
+     (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
+         (org-capture)))
+     (setq org-src-window-setup 'current-window)
+
+    (require 'color)
+    (set-face-attribute 'org-block nil :background
+        (color-darken-name
+         (face-attribute 'default :background) 1))
+    (setq org-image-actual-width nil)
+
+    (add-hook 'org-mode-hook (lambda ()
+       (setq buffer-face-mode-face '(:family "Open Sans" :height 140))
+       (setq line-spacing 6)
+       (buffer-face-mode)))
+
+     (defun my-buffer-face-mode-variable ()
+       "Set font to a variable width (proportional) fonts in current buffer"
+       (interactive)
+       (setq buffer-face-mode-face '(:family "Open Sans" :height 140 :width semi-condensed))
+       (buffer-face-mode))
+
+     ;; Use monospaced font faces in current buffer
+     (defun my-buffer-face-mode-fixed ()
+       "Sets a fixed width (monospace) font in current buffer"
+       (interactive)
+       (setq buffer-face-mode-face '(:family "Open Sans" :height 140))
+       (buffer-face-mode))
+
+     ;; Set default font faces for Info and ERC modes
+     (add-hook 'org-mode-hook 'my-buffer-face-mode-variable)
+
+    (defvar my-hide-org-meta-line-p nil)
+      (defun my-hide-org-meta-line ()
         (interactive)
-        (make-frame '((name . "capture")))
-        (select-frame-by-name "capture")
-        (delete-other-windows)
-        (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-            (org-capture)))
-        (setq org-src-window-setup 'current-window)
-
-                        (require 'color)
-                        (set-face-attribute 'org-block nil :background
-                                            (color-darken-name
-                                             (face-attribute 'default :background) 1))
-                        (setq org-image-actual-width nil)
-
-                    (add-hook 'org-mode-hook (lambda ()
-                                                (setq buffer-face-mode-face '(:family "Hack" :height 120))
-                                                (buffer-face-mode)))
-                          (add-hook 'org-mode-hook (lambda ()
-                                                (setq-default line-spacing 6)))
-
-                    (defvar my-hide-org-meta-line-p nil)
-                      (defun my-hide-org-meta-line ()
-                        (interactive)
-                        (setq my-hide-org-meta-line-p t)
-                        (set-face-attribute 'org-meta-line nil
-                                            :foreground (face-attribute 'default :background)))
-                      (defun my-show-org-meta-line ()
-                        (interactive)
-                        (setq my-hide-org-meta-line-p nil)
-                        (set-face-attribute 'org-meta-line nil :foreground nil))
-                      (defun my-toggle-org-meta-line ()
-                        (interactive)
-                        (if my-hide-org-meta-line-p
-                            (my-show-org-meta-line) (my-hide-org-meta-line)))
-                      (add-hook 'org-tree-slide-play-hook #'my-hide-org-meta-line)
-                      (add-hook 'org-tree-slide-stop-hook #'my-show-org-meta-line)
+        (setq my-hide-org-meta-line-p t)
+        (set-face-attribute 'org-meta-line nil
+                            :foreground (face-attribute 'default :background)))
+      (defun my-show-org-meta-line ()
+        (interactive)
+        (setq my-hide-org-meta-line-p nil)
+        (set-face-attribute 'org-meta-line nil :foreground nil))
+      (defun my-toggle-org-meta-line ()
+        (interactive)
+        (if my-hide-org-meta-line-p
+            (my-show-org-meta-line) (my-hide-org-meta-line)))
+      (add-hook 'org-tree-slide-play-hook #'my-hide-org-meta-line)
+      (add-hook 'org-tree-slide-stop-hook #'my-show-org-meta-line)
 
 
-            (use-package org-roam
-              :ensure t
-              :init
-              (setq org-roam-v2-ack t)
-              :custom
-              (org-roam-directory "~/org-roam")
-              (org-roam-db-autosync-mode)
-              (org-roam-completion-everywhere t)
-              (org-roam-capture-templates
-               '(("d" "default" plain
-                  "%?"
-                  :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-                  :unnarrowed t)
-                    ("l" "programming language" plain
-                     "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n* Reference:\n\n"
-                     :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-                     :unnarrowed t)))         
-              :bind (("C-c n l" . org-roam-buffer-toggle)
-                     ("C-c n f" . org-roam-node-find)             
-                     ("C-c n i" . org-roam-node-insert)
-                     ;; Dailies
-                     ("C-c n d" . org-roam-dailies-capture-today)
-                     :map org-mode-map
-                     ("C-M-i" . completion-at-point))
-              :config
-              (org-roam-setup))
+    (use-package org-roam
+      :ensure t
+      :init
+      (setq org-roam-v2-ack t)
+      :custom
+      (org-roam-directory "~/org-roam")
+      (org-roam-db-autosync-mode)
+      (org-roam-completion-everywhere t)
+      (org-roam-capture-templates
+       '(("d" "default" plain
+          "%?"
+          :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+          :unnarrowed t)
+            ("l" "programming language" plain
+             "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n* Reference:\n\n"
+             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+             :unnarrowed t)))         
+      :bind (("C-c n l" . org-roam-buffer-toggle)
+             ("C-c n f" . org-roam-node-find)             
+             ("C-c n i" . org-roam-node-insert)
+             ("C-c n r" . org-roam-node-random)                     
+             ;; Dailies
+             ("C-c n d" . org-roam-dailies-capture-today)
+             :map org-mode-map
+             ("C-M-i" . completion-at-point))
+      :config
+      (org-roam-setup))
 
 
-                    ;; Org download; Implements ability to drag and drop images into org-mode.
-                (use-package org-download
-                  :ensure t
-                  :config
-                  ;; Add support to dired
-                  (add-hook 'dired-mode-hook 'org-download-enable)
-                  ;; org-download default directory
-                   (setq-default org-download-image-dir "~/.emacs.d/images")
-                  (setq org-download-image-html-width '320))
+            ;; Org download; Implements ability to drag and drop images into org-mode.
+        (use-package org-download
+          :ensure t
+          :config
+          ;; Add support to dired
+          (add-hook 'dired-mode-hook 'org-download-enable)
+          ;; org-download default directory
+           (setq-default org-download-image-dir "~/.emacs.d/images")
+          (setq org-download-image-html-width '320))
+
+
+     ; (use-package mixed-pitch
+     ;   :hook
+     ;   (org-mode . mixed-pitch-mode)
+     ;   :config
+     ;   (set-face-attribute 'default nil :font "Open Sans"  :height 140)
+     ;   (set-face-attribute 'fixed-pitch nil :font "Open Sans")
+     ;   (set-face-attribute 'variable-pitch nil :font "Open Sans"))
+     ;;  (add-hook 'mixed-pitch-mode-hook #'solaire-mode-reset)
 
 
 
-
+ (setq org-agenda-files '("~/org-roam"))
 
   #+END_SRC
 
   #+RESULTS:
   : make-capture-frame
-* Ace windows for easy window switching
+* Ace windows/buffer-move for easy window switching
   #+BEGIN_SRC emacs-lisp
-  (use-package ace-window
-  :ensure t
-  :init
-  (progn
-    (global-set-key [remap other-window] 'ace-window)
-    (custom-set-faces
-     '(aw-leading-char-face
-       ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-    ))
+    (use-package ace-window
+    :ensure t
+    :init
+    (progn
+    (global-set-key (kbd "M-o") 'ace-window)
+      (custom-set-faces
+       '(aw-leading-char-face
+         ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+      ))
+
+    (use-package buffer-move
+      :bind (
+         ("<C-S-left>" . buf-move-left)
+         ("<C-S-down>" . buf-move-down)
+         ("<C-S-up>" . buf-move-up)
+         ("<C-S-right>" . buf-move-right))
+    )
+
   #+END_SRC
 
-* Swiper / Ivy / Counsel
+* Swiper / Ivy / Counsel / Smex
   Swiper gives us a really efficient incremental search with regular expressions
   and Ivy / Counsel replace a lot of ido or helms completion functionality
   #+BEGIN_SRC emacs-lisp
-  
-       (use-package counsel
-    :ensure t
-      :bind
-      (("M-y" . counsel-yank-pop)
-       :map ivy-minibuffer-map
-       ("M-y" . ivy-next-line)))
+
+             (use-package counsel
+          :ensure t
+            :bind
+            (("M-y" . counsel-yank-pop)
+             :map ivy-minibuffer-map
+             ("M-y" . ivy-next-line)))
 
 
-      (use-package ivy
-      :ensure t
-      :diminish (ivy-mode)
-      :bind (("C-x b" . ivy-switch-buffer))
-      :config
-      (ivy-mode 1)
-      (setq ivy-use-virtual-buffers t)
-      (setq ivy-display-style 'fancy))
+            (use-package ivy
+            :ensure t
+            :diminish (ivy-mode)
+            :bind (("C-x b" . ivy-switch-buffer))
+            :config
+            (ivy-mode 1)
+            (setq ivy-use-virtual-buffers t)
+            (setq ivy-display-style 'fancy))
 
 
-      (use-package swiper
-      :ensure t
-      :bind (("C-s" . swiper)
-             ("C-r" . swiper)
-             ("C-c C-r" . ivy-resume)
-             ("C-x C-f" . counsel-find-file))
-      :config
-      (progn
-        (ivy-mode 1)
-        (setq ivy-use-virtual-buffers t)
-        (setq ivy-display-style 'fancy)
-        (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-        ))
+            (use-package swiper
+            :ensure t
+            :bind (("C-s" . swiper)
+                   ("C-r" . swiper)
+                   ("C-c C-r" . ivy-resume)
+                   ("C-x C-f" . counsel-find-file))
+            :config
+            (progn
+              (ivy-mode 1)
+              (setq ivy-use-virtual-buffers t)
+              (setq ivy-display-style 'fancy)
+              (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+              ))
+
+
+        (use-package smex
+          :ensure t
+          :config
+          (global-set-key (kbd "M-x") 'helm-smex)
+        (global-set-key (kbd "M-X") 'smex-major-mode-commands))
+
+    (global-set-key (kbd "C-x C-f") #'helm-find-files)
+    (helm-mode 1)
+
   #+END_SRC
 
 * Avy - navigate by searching for a letter on the screen and jumping to it
@@ -620,48 +674,49 @@
 
 * LSP
 #+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode
-    :ensure t
-    :config
-    :commands lsp
-    :custom
-   ;; :require lsp-mode
-    (lsp-auto-guess-root nil)
-    (setq lsp t)
-    (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-    :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
-    :hook ((python-mode c-mode java-mode c++-mode php-mode) . lsp))
-  (add-hook 'prog-mode-hool #'lsp)
+    (use-package lsp-mode
+      :ensure t
+      :config
+      :commands lsp
+      :custom
+     ;; :require lsp-mode
+      (lsp-auto-guess-root nil)
+      (setq lsp t)
+      (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
+      :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
+      :hook ((python-mode c-mode java-mode c++-mode php-mode) . lsp))
+    (add-hook 'prog-mode-hool #'lsp)
+
+
+
 
   (use-package lsp-ui
-    ;;:require lsp-ui
-  :ensure t
+    :ensure t
+    ;; gets started by lsp-mode
     :commands lsp-ui-mode
-    :custom-face
-    (lsp-ui-doc-background ((t (:background nil))))
-    (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
-    :bind (:map lsp-ui-mode-map
-                ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-                ([remap xref-find-references] . lsp-ui-peek-find-references)
-                ("C-c u" . lsp-ui-imenu))
-    :custom
-    (lsp-ui-doc-enable t)
-    (lsp-ui-doc-header t)
-    (lsp-ui-doc-include-signature t)
-    (lsp-ui-doc-position 'top)
-    (lsp-ui-doc-border (face-foreground 'default))
-    (lsp-ui-sideline-enable nil)
-    (lsp-ui-sideline-ignore-duplicate t)
-    (lsp-ui-sideline-show-code-actions nil)
     :config
-    ;; Use lsp-ui-doc-webkit only in GUI
-    (setq lsp-ui-doc-use-webkit t)
-    (setq lsp-ui-mode t)
-    ;; WORKAROUND Hide mode-line of the lsp-ui-imenu buffer
-    ;; https://github.com/emacs-lsp/lsp-ui/issues/243
-    (defadvice lsp-ui-imenu (after hide-lsp-ui-imenu-mode-line activate)
-      (setq mode-line-format nil)))
-  (defun lsp-ui-sideline--compute-height nil '(height unspecified))
+    ;; display information about symbols on the current line as we type?
+    (setq lsp-ui-sideline-enable t)
+    ;; indicate if lsp-ui-doc should be rendered on hover at every symbol. if nil
+    ;; `(lsp-ui-doc-show)` can still be used to open the docs for a symbol.
+    (setq lsp-ui-doc-enable nil) ;; set to t to automatically show documentation on keyboard cursor position
+    (setq lsp-ui-doc-max-width 70)
+    (setq lsp-ui-doc-max-height 10)
+    (setq lsp-ui-doc-delay 0.0)
+    (setq lsp-ui-doc-position 'at-point)
+    ;; disaply doc in a WebKit widget?
+    (setq lsp-ui-doc-use-webkit nil)
+    ;; enable lsp-ui-peek feature: M-x lsp-ui-peek-find-{references,definitions}
+    (setq lsp-ui-peek-enable t)
+    ;; show peek view even if there is only one candidate
+    (setq lsp-ui-peek-always-show t)
+    (setq lsp-ui-doc-show-with-cursor t)
+    ;; lsp-ui specific keybindings
+    (define-key lsp-mode-map (kbd "C-c p d") #'lsp-ui-peek-find-definitions)
+    (define-key lsp-mode-map (kbd "C-c p r") #'lsp-ui-peek-find-references)
+    (define-key lsp-mode-map (kbd "C-c z")   #'lsp-ui-doc-focus-frame)
+    )
+
 #+END_SRC
 
 #+RESULTS:
@@ -821,9 +876,9 @@
 #+end_src
 * Stupid discord thing
 #+BEGIN_SRC emacs-lisp
-(require 'elcord)
-(elcord-mode)
-(custom-set-variables
+;(require 'elcord)
+;(elcord-mode)
+;(custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
@@ -836,7 +891,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  ;;)
- )
+; )
 #+END_SRC
 
 * Multi-web mode
@@ -879,15 +934,22 @@
         (eaf-bind-key take_photo "p" eaf-camera-keybinding)
         (eaf-bind-key nil "M-q" eaf-browser-keybinding)) ;; unbind, see more in the Wiki
         :config
-          (require 'eaf-browser)
-          (require 'eaf-music-player)
-          (require 'eaf-demo)
-          (require 'eaf-file-manager)
-          (require 'eaf-terminal)
-          (require 'eaf-pdf-viewer)
-          (setq eaf-pdf-dark-mode t)
-          (require 'eaf-markdown-previewer)
-          (require 'eaf-org-previewer)
+        (require 'eaf-browser)
+(require 'eaf-terminal)
+(require 'eaf-system-monitor)
+(require 'eaf-git)
+(require 'eaf-markdown-previewer)
+(require 'eaf-music-player)
+(require 'eaf-image-viewer)
+(require 'eaf-video-player)
+(require 'eaf-file-sender)
+(require 'eaf-file-manager)
+(require 'eaf-rss-reader)
+(require 'eaf-file-browser)
+(require 'eaf-pdf-viewer)
+(require 'eaf-netease-cloud-music)
+(require 'eaf-org-previewer)
+
 #+END_SRC
 * Other stuff
 #+BEGIN_SRC emacs-lisp
@@ -914,27 +976,55 @@
 
 * Dired
 #+BEGIN_SRC emacs-lisp
-   (use-package dired-sidebar
-    :bind
-    (:map global-map
-          ([f8]        . dired-sidebar-jump-to-sidebar)
-          ([C-f8]        . dired-sidebar-hide-sidebar)          
-        )
-               :ensure t
-    :config
-     :init
-              (add-to-list 'load-path "~/")
-     (add-hook 'dired-sidebar-mode-hook
-             (lambda ()
-               (unless (file-remote-p default-directory)
-                 (auto-revert-mode))))
-  ;;   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-  ;; (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-   (setq dired-sidebar-subtree-line-prefix "__")
-;;   (setq dired-sidebar-theme 'icons)
-   (setq dired-sidebar-use-term-integration t)
-   (setq dired-sidebar-use-custom-font t)
+       (use-package dired-sidebar
+        :bind
+        (:map global-map
+              ([f8]        . dired-sidebar-jump-to-sidebar)
+              ([C-f8]        . dired-sidebar-hide-sidebar)          
+            )
+                   :ensure t
         :config
-   (require 'dired-sidebar))
+         :init
+                  (add-to-list 'load-path "~/")
+         (add-hook 'dired-sidebar-mode-hook
+                 (lambda ()
+                   (unless (file-remote-p default-directory)
+                     (auto-revert-mode))))
+      ;;   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
+      ;; (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
+
+       (setq dired-sidebar-subtree-line-prefix "__")
+    ;;   (setq dired-sidebar-theme 'icons)
+       (setq dired-sidebar-use-term-integration t)
+       (setq dired-sidebar-use-custom-font t)
+            :config
+       (require 'dired-sidebar))
+
 #+END_SRC
+
+* Evil
+#+BEGIN_SRC emacs-lisp
+  (setq evil-disable-insert-state-bindings t)
+  (evil-mode 1)
+  (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
+  (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
+
+  (define-key evil-visual-state-map (kbd "C-e") 'evil-end-of-line)
+  (define-key evil-visual-state-map (kbd "C-a") 'evil-beginning-of-line)
+
+  (define-key evil-normal-state-map (kbd "/") 'swiper)
+  (define-key evil-visual-state-map (kbd "/") 'swiper)
+
+  (define-key evil-motion-state-map (kbd "SPC") nil)
+  (define-key evil-motion-state-map (kbd "RET") nil)
+  (define-key evil-motion-state-map (kbd "TAB") nil)
+
+  (define-key evil-motion-state-map (kbd "SPC")   #'lsp-ui-doc-show)
+  (define-key evil-motion-state-map (kbd "S-SPC")   #'lsp-ui-doc-hide) ; "end show"
+
+  (global-linum-mode 1)
+
+
+  #+END_SRC
+
+ 
