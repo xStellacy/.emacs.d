@@ -472,23 +472,6 @@
 #+RESULTS:
 : t
 
-* Elfeed
-;;#+begin_src emacs-lisp
-;;  (use-package elfeed
-;;  :ensure t
-
-
-;;  :bind (:map elfeed-search-mode-map
-;;	      ("q" . bjm/elfeed-save-db-and-bury)
-;;	      ("Q" . bjm/elfeed-save-db-and-bury)
-;;	      ("m" . elfeed-toggle-star)
-;;	      ("M" . elfeed-toggle-star)
-;;	      )
-;;  )
-
-
-;;#+end_src
-
 * Hydra
 #+BEGIN_SRC emacs-lisp
   (use-package hydra
@@ -654,24 +637,6 @@
 #+end_src
 
 #+RESULTS:
-* perskeymap
-;;#+begin_src emacs-lisp
-;;    ;; set up my own map
-;;  (define-prefix-command 'z-map)
-;;  (global-set-key (kbd "C-1") 'z-map)
-;;
-;;
-;;  (define-key z-map (kbd "y") 'aya-create)
-;;  (define-key z-map (kbd "e") 'aya-expand)
-;;  (global-set-key (kbd "C-c m") 'menu-bar-mode)
-
-
-
-;;#+end_src
-
-#+RESULTS:
-| lambda | nil | (interactive) | (save-buffer) | (quickrun-shell) |
-
 * LSP
 #+BEGIN_SRC emacs-lisp
     (use-package lsp-mode
@@ -737,38 +702,6 @@
 #+RESULTS:
 : t
 
-* Python
-
-#+BEGIN_SRC emacs-lisp
-
-
-;;        (use-package virtualenvwrapper
-         ; :ensure t
-;;          :config
-;;          (venv-initialize-interactive-shells)
-;;          (venv-initialize-eshell))
- 
-;;(venv-workon "p3")
-;;(setq lsp-python-executable-cmd "python")
-
-#+END_SRC
-
-#+RESULTS:
-: python
-
-* C++
-#+BEGIN_SRC emacs-lisp
-
-  ;;(setq lsp-clangd-executable "clangd")
-  ;;(setq lsp-clients-clangd-executable "clangd")
-
-
-
-#+END_SRC
-
-#+RESULTS:
-: clangd
-
 * Functions
 
 #+BEGIN_SRC emacs-lisp
@@ -781,17 +714,6 @@
       (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
 
 #+END_SRC
-
-#+RESULTS:
-: t
-
-* Java
-#+begin_src emacs-lisp
-    (use-package lsp-java
-  :ensure t
-  :config (add-hook 'java-mode-hook 'lsp))
-
-#+end_src
 
 #+RESULTS:
 : t
@@ -849,7 +771,6 @@
   (setq backup-directory-alist '(("" . "~/.emacs.d/cache/backup/")))
   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/cache/undo/")))
   (setq auto-save-file-name-transforms `((".*" "~/.emacs.d/cache/autosave/" t)))
-
 #+end_src
 * PHP
 #+begin_src emacs-lisp
@@ -874,26 +795,6 @@
 
 
 #+end_src
-* Stupid discord thing
-#+BEGIN_SRC emacs-lisp
-;(require 'elcord)
-;(elcord-mode)
-;(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- '(elcord-mode t nil (elcord))
- '(elcord-use-major-mode-as-main-icon t)
- ;;(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
- ;;)
-; )
-#+END_SRC
-
 * Multi-web mode
 #+begin_src emacs-lisp
     (require 'multi-web-mode)
@@ -953,25 +854,29 @@
 #+END_SRC
 * Other stuff
 #+BEGIN_SRC emacs-lisp
-    (set-background-color "black")
-               (load-theme 'xresources t)
-               (load-theme 'xresources t)
-               (load-theme 'xresources t)
-    (defun my-set-background-color (&optional frame)
-    "Set custom background color."
-    (with-selected-frame (or frame (selected-frame))
-      (set-background-color "black")))
+      (set-background-color "black")
+                 (load-theme 'xresources t)
+                 (load-theme 'xresources t)
+                 (load-theme 'xresources t)
+      (defun my-set-background-color (&optional frame)
+      "Set custom background color."
+      (with-selected-frame (or frame (selected-frame))
+        (set-background-color "black")))
 
-  ;; Run later, for client frames...
-  (add-hook 'after-make-frame-functions 'my-set-background-color)
-  ;; ...and now, for the initial frame.
-  (my-set-background-color)
+    ;; Run later, for client frames...
+    (add-hook 'after-make-frame-functions 'my-set-background-color)
+    ;; ...and now, for the initial frame.
+    (my-set-background-color)
 
-  (setq redisplay-dont-pause t
-  scroll-margin 10
-  scroll-step 1
-  scroll-conservatively 1000
-  scroll-preserve-screen-position 1)
+    (setq redisplay-dont-pause t
+    scroll-margin 10
+    scroll-step 1
+    scroll-conservatively 1000
+    scroll-preserve-screen-position 1)
+
+   '(elcord-mode t nil (elcord))
+   '(elcord-use-major-mode-as-main-icon t)
+
   #+END_SRC
 
 * Dired
@@ -1027,4 +932,8 @@
 
   #+END_SRC
 
- 
+* NASM Assember
+#+BEGIN_SRC emacs-lisp
+(require 'nasm-mode)
+(add-to-list 'auto-mode-alist '("\\.\\(asm\\|s\\)$" . nasm-mode))
+#+END_SRC
