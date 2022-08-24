@@ -1,27 +1,21 @@
+(server-start)
 (require 'package)
 (setq package-enable-at-startup nil)
 (add-to-list 'package-archives
 	     '("melpa" . "https://melpa.org/packages/"))
 (package-initialize)
-
-;; Bootstrap `use-package'
-;(unless (package-installed-p 'use-package)
-;	(package-refresh-contents)
-;	(package-install 'use-package))
-
-(setq inhibit-startup-message t)
-(set-face-attribute 'default nil :font "Monospace" :height 105)
-(setq outline-hide-sublevels 1)
 (tool-bar-mode -1)
-    (menu-bar-mode -1)
-    (scroll-bar-mode -1)
-    (global-display-line-numbers-mode)
+(menu-bar-mode -1)
+(scroll-bar-mode -1)
+(setq inibit-startup-message t)
+(when (display-graphic-p)
 (org-babel-load-file (expand-file-name "~/.emacs.d/myinit1.org"))
-;;(custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
+(setq visible-bell 1)
+(set-frame-parameter (selected-frame) 'alpha-background 0.95)
+;;(set-face-attribute 'default nil :font "Monospace" :height 105)
+;;(set-face-attribute 'default nil :font "JetBrains Mono" :height 110)
+(setq outline-hide-sublevels 1)
+;;    (global-display-line-numbers-mode)
 '(compilation-scroll-output t)
  '(custom-safe-themes
    '("c414f69a02b719fb9867b41915cb49c853489930be280ce81385ff7b327b4bf6" "02fff7eedb18d38b8fd09a419c579570673840672da45b77fde401d8708dc6b5" "e6506be83f914ee7a956d3d8ccddc9cc984d5e1b1b7bf2e63dbfb7ed03ec7d1c" "fc48cc3bb3c90f7761adf65858921ba3aedba1b223755b5924398c666e78af8b" "e5dc5b39fecbeeb027c13e8bfbf57a865be6e0ed703ac1ffa96476b62d1fae84" default))
@@ -29,53 +23,26 @@
  '(org-hide-leading-stars t)
  '(org-startup-folded 'overview)
  '(org-startup-indented t)
- ;'(package-selected-packages
- ;  '(company-c-headers lsp-ivy flymake-flycheck elcord helm-gtags gtags-mode helm-phpunit flyspell-popup popup-kill-ring xah-fly-keys popup-switcher composer php-eldoc popup-edit-menu popup-imenu company-phpactor popup-complete password-store company-php phps-mode ac-php flymake-php php-mode flycheck-haskell haskell-mode modus-vivendi-theme modus-operandi-theme modus-themes dashboard dap-mode quickrun maven-test-mode xresources-theme ewal javadoc-lookup xwwp-follow-link-helm helm-lsp lsp-mode lsp-ui lsp-java git-timemachine git-gutter magit Dired+ treemacs-projectile treemacs emmet-mode ggtags hydra noflet circe undo-tree zenburn-theme yasnippet-snippets yasnippet-lean yasnippet-classic-snippets which-key web-mode use-package try pylint ox-reveal org-movies org-bullets jedi iedit htmlize flycheck expand-region elpy counsel company company-jedi color-theme beacon ace-window))
-; '(warning-suppress-log-types
-;   '((color-theme)
-;     (color-theme)
-;     (use-package)
-;     (use-package)
-;     (use-package)
-;     (use-package)))
-; '(warning-suppress-types
-;   '((iedit)
-;     ((flymake flymake))
-;     (auto-save)
-;     (color-theme)
-;     (use-package)
-;     (use-package)
-;     (use-package)
-;     (use-package))))
-;(custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0))))
  '(lsp-ui-doc-background ((t (:background nil))))
  '(lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
 (custom-set-variables
- ;; custom-set-variables was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(custom-safe-themes
-   '("e5dc5b39fecbeeb027c13e8bfbf57a865be6e0ed703ac1ffa96476b62d1fae84" default))
+   '("a0415d8fc6aeec455376f0cbcc1bee5f8c408295d1c2b9a1336db6947b89dd98" "e5dc5b39fecbeeb027c13e8bfbf57a865be6e0ed703ac1ffa96476b62d1fae84" default))
+ '(elcord-boring-buffers-regexp-list '("n^ " "\\\\*Messages\\\\*"))
  '(elcord-display-buffer-details nil)
+ '(elcord-editor-icon "emacs_pen_icon")
  '(elcord-mode t nil (elcord))
- '(elcord-refresh-rate 2)
+ '(elcord-quiet t)
+ '(elcord-refresh-rate 1)
  '(elcord-use-major-mode-as-main-icon t)
+ '(lsp-clangd-version "13.0.0")
  '(org-export-html-postamble nil)
  '(org-startup-folded 'overview)
  '(org-startup-indented t)
  '(package-selected-packages
-   '(bitlbee sxiv simple-mpc emms org-roam vterm haskell-mode focus-autosave-mode skewer-mode treemacs-tab-bar treemacs-persp cargo auto-complete-rst cargo-mode rust-mode yasnippet-snippets xresources-theme which-key web-mode use-package undo-tree try treemacs-projectile shell-switcher quickrun php-eldoc ox-reveal org-bullets noflet multi-web-mode modus-themes magit lsp-ui lsp-java jedi ivy-avy iedit htmlize helm-lsp git-timemachine git-gutter ggtags flymake-phpstan flymake-phpcs flymake-php flycheck expand-region ewal emmet-mode elpy elfeed elcord default-text-scale dashboard counsel company-phpactor company-php better-shell beacon auto-yasnippet ac-php)))
+   '(evil elcord org-download org-pdftools pdf-tools w3m bitlbee sxiv simple-mpc emms org-roam vterm haskell-mode focus-autosave-mode skewer-mode treemacs-tab-bar treemacs-persp cargo auto-complete-rst cargo-mode rust-mode yasnippet-snippets xresources-theme which-key web-mode use-package undo-tree try treemacs-projectile shell-switcher quickrun php-eldoc ox-reveal org-bullets noflet multi-web-mode modus-themes magit lsp-ui lsp-java jedi ivy-avy iedit htmlize helm-lsp git-timemachine git-gutter ggtags flymake-phpstan flymake-phpcs flymake-php flycheck expand-region ewal emmet-mode elpy elfeed default-text-scale dashboard counsel company-phpactor company-php better-shell beacon auto-yasnippet ac-php)))
 (custom-set-faces
- ;; custom-set-faces was added by Custom.
- ;; If you edit it by hand, you could mess it up, so be careful.
- ;; Your init file should contain only one such instance.
- ;; If there is more than one, they won't work right.
  '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0))))
  '(lsp-ui-doc-background ((t (:background nil))))
  '(lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
@@ -84,3 +51,98 @@
  '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
  '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
  '(org-level-5 ((t (:inherit outline-5 :height 1.0)))))
+)
+(custom-set-variables
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(company-clang-use-compile-flags-txt nil)
+ '(custom-safe-themes
+   '("a0415d8fc6aeec455376f0cbcc1bee5f8c408295d1c2b9a1336db6947b89dd98" "dad40020beea412623b04507a4c185079bff4dcea20a93d8f8451acb6afc8358" "e5dc5b39fecbeeb027c13e8bfbf57a865be6e0ed703ac1ffa96476b62d1fae84" default))
+ '(elcord-boring-buffers-regexp-list
+   '("\\*Messages\\*" "\\*dashboard\\*" "Custom" "Fundamental"))
+ '(elcord-display-buffer-details nil)
+ '(elcord-editor-icon "emacs_pen_icon")
+ '(elcord-mode t nil (elcord))
+ '(elcord-mode-text-alist
+   '((agda-mode . "Agda")
+     (assembly-mode . "Assembly")
+     (c-mode . "C")
+     (c++-mode . "C++")
+     (csharp-mode . "C#")
+     (cperl-mode . "Perl")
+     (elixir-mode . "Elixir")
+     (enh-ruby-mode . "Ruby")
+     (erlang-mode . "Erlang")
+     (fsharp-mode . "F#")
+     (gdscript-mode . "GDScript")
+     (hy-mode . "Hy")
+     (java-mode . "Java")
+     (julia-mode . "Julia")
+     (lisp-mode . "Common Lisp")
+     (markdown-mode . "Markdown")
+     (magit-mode . "It's Magit!")
+     ("mhtml-mode" . "HTML")
+     (nim-mode . "Nim")
+     (ocaml-mode . "OCaml")
+     (pascal-mode . "Pascal")
+     (puml-mode . "UML")
+     (sh-mode . "Shell")
+     (slime-repl-mode . "SLIME-REPL")
+     (sly-mrepl-mode . "Sly-REPL")
+     (solidity-mode . "Solidity")
+     (terraform-mode . "Terraform")
+     (typescript-mode . "Typescript")
+     (php-mode "PHP")))
+ '(elcord-quiet t)
+ '(elcord-refresh-rate 1)
+ '(elcord-use-major-mode-as-main-icon nil)
+ '(evil-undo-system 'undo-tree)
+ '(flycheck-c/c++-gcc-executable "/usr/bin/g++")
+ '(flycheck-checkers
+   '(c/c++-gcc lsp ada-gnat asciidoctor asciidoc awk-gawk bazel-buildifier c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint cuda-nvcc cwl d-dmd dockerfile-hadolint elixir-credo emacs-lisp emacs-lisp-checkdoc ember-template erlang-rebar3 erlang eruby-erubis eruby-ruumba fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-staticcheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-standard json-jsonlint json-python-json json-jq jsonnet less less-stylelint llvm-llc lua-luacheck lua markdown-markdownlint-cli markdown-mdl nix nix-linter opam perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc protobuf-prototool pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile python-pyright python-mypy r-lintr racket rpm-rpmlint rst-sphinx rst ruby-rubocop ruby-standard ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust rust-clippy scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tcl-nagelfar terraform terraform-tflint tex-chktex tex-lacheck texinfo textlint typescript-tslint verilog-verilator vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby yaml-yamllint))
+ '(flycheck-clang-args nil)
+ '(flycheck-clang-include-path '("/usr/lib/" "/usr/include/"))
+ '(flycheck-clang-includes nil)
+ '(flycheck-clang-ms-extensions t)
+ '(flycheck-clang-standard-library nil)
+ '(flycheck-disabled-checkers '(c/c++-clang))
+ '(flycheck-gcc-args nil)
+ '(flycheck-gcc-include-path nil)
+ '(global-flycheck-mode t)
+ '(lsp-clangd-version "13.0.0")
+ '(lsp-clients-clangd-library-directories '("/usr"))
+ '(lsp-ui-doc-include-signature t)
+ '(org-export-html-postamble nil)
+ '(org-startup-folded 'overview)
+ '(org-startup-indented t)
+ '(package-selected-packages
+   '(flycheck-pkg-config soundklaus ivy-spotify netease-cloud-music masm-mode flymake-nasm nasm-mode password-vault pass sideline-flycheck helm-flycheck helm-smex ripgrep helm-org-ql mixed-pitch evil-tabs centaur-tabs buffer-move rainbow-mode ccls eldoc-cmake cpp-auto-include cpputils-cmake markdown-preview-mode dired-sidebar dired-collapse dired-narrow dired-ranger dired-subtree dired-rainbow dired-filter dired-hacks-utils counsel-projectile lsp-haskell consult-org-roam org-roam-ui evil elcord org-download org-pdftools pdf-tools w3m bitlbee sxiv simple-mpc emms org-roam vterm haskell-mode focus-autosave-mode skewer-mode treemacs-tab-bar treemacs-persp cargo auto-complete-rst cargo-mode rust-mode yasnippet-snippets xresources-theme which-key web-mode use-package undo-tree try treemacs-projectile shell-switcher quickrun php-eldoc ox-reveal org-bullets noflet multi-web-mode modus-themes magit lsp-ui lsp-java jedi ivy-avy iedit htmlize helm-lsp git-timemachine git-gutter ggtags flymake-phpstan flymake-phpcs flymake-php flycheck expand-region ewal emmet-mode elpy elfeed default-text-scale dashboard counsel company-phpactor company-php better-shell beacon auto-yasnippet ac-php))
+ '(smooth-scroll-margin 5))
+(custom-set-faces
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
+ '(aw-leading-char-face ((t (:inherit ace-jump-face-foreground :height 3.0))))
+ '(hl-line ((t nil)))
+ '(lsp-ui-doc-background ((t (:background nil))))
+ '(lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
+ '(org-block ((t (:inherit fixed-pitch))))
+ '(org-code ((t (:inherit (shadow fixed-pitch)))))
+ '(org-document-info ((t (:foreground "dark orange"))))
+ '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+ '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+ '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+ '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+ '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
+ '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
+ '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+ '(org-link ((t (:foreground "royal blue" :underline t))))
+ '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-property-value ((t (:inherit fixed-pitch))) t)
+ '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+ '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+ '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+ '(org-verbatim ((t (:inherit (shadow fixed-pitch))))))
