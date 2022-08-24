@@ -376,8 +376,10 @@
       :ensure t
       :config
       :init
-      (global-undo-tree-mode))
+      (global-undo-tree-mode 1)
       (global-set-key (kbd "C-u") 'undo-tree-visualizer-toggle-timestamps)
+      (global-undo-tree-mode))
+
   #+END_SRC
 * Misc packages
   #+BEGIN_SRC emacs-lisp
@@ -626,14 +628,13 @@
 )
 
 #+END_SRC
-
 #+RESULTS:
 
 * auto-yasnippet
-#+begin_src emacs-lisp
-  (use-package auto-yasnippet
-    :ensure t)
-  
+;;#+begin_src emacs-lisp
+;;    (use-package auto-yasnippet
+;;      (yas-global-mode 1)
+;;      :ensure t)
 #+end_src
 
 #+RESULTS:
@@ -906,7 +907,6 @@
        (require 'dired-sidebar))
 
 #+END_SRC
-
 * Evil
 #+BEGIN_SRC emacs-lisp
   (setq evil-disable-insert-state-bindings t)
@@ -931,9 +931,14 @@
 
 
   #+END_SRC
-
 * NASM Assember
 #+BEGIN_SRC emacs-lisp
 (require 'nasm-mode)
 (add-to-list 'auto-mode-alist '("\\.\\(asm\\|s\\)$" . nasm-mode))
+#+END_SRC
+* ERC
+#+BEGIN_SRC emacs-lisp
+  (require 'erc-image)
+  (add-to-list 'erc-modules 'image)
+  (erc-update-modules)
 #+END_SRC
