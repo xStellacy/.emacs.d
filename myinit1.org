@@ -4,15 +4,14 @@
      (save-place-mode 1)
            (fset 'yes-or-no-p 'y-or-n-p)
            (global-set-key (kbd "<f6>") 'revert-buffer)
-           ;;(global-set-key (kbd "C-c c") (lambda () (interactive) (save-buffer) (quickrun-shell)))
+           (global-set-key (kbd "M-o") 'evil-window-next)
            (global-set-key (kbd "C-c c") 'recompile)
-     ;
-                                           ;      (global-set-key (kbd "C-c c") 'rust-compile)
            (setq compilation-ask-about-save nil)
            (global-set-key (kbd "C-.") 'shrink-window-horizontally)
            (global-set-key (kbd "C-,") 'enlarge-window-horizontally)
            (global-set-key (kbd "C->") 'shrink-window)
            (global-set-key (kbd "C-<") 'enlarge-window)
+           (global-set-key (kbd "M-0") 'kill-buffer-and-window)
            (setq quickrun-focus-p nil)
            (setq even-window-heights nil)
       ;; (setq compile-command "g++ main.cpp && ./a.out")
@@ -283,7 +282,7 @@
     :ensure t
     :init
     (progn
-    (global-set-key (kbd "M-o") 'ace-window)
+    (global-set-key (kbd "C-x o") 'ace-window)
       (custom-set-faces
        '(aw-leading-char-face
          ((t (:inherit ace-jump-face-foreground :height 3.0)))))
@@ -654,6 +653,18 @@
     (add-hook 'prog-mode-hool #'lsp)
 
 
+  ;; Setup for Python development
+  
+  (use-package python-mode
+  :ensure t
+  :hook (python-mode . lsp-deferred)
+  :custom
+  (python-shell-interpreter "python3")
+  (dap-python-executable "python3")
+  ;;(dap-python-debugger 'debugpy)
+  :config
+  (require 'dap-python))
+
 
 
   (use-package lsp-ui
@@ -721,18 +732,49 @@
 
 * Dap mode
 #+BEGIN_SRC emacs-lisp
+  ;;  (use-package dap-mode
+  ;;    :ensure t
+  ;;    :after (lsp-mode)
+  ;;    :functions dap-hydra/nil
+  ;;    :config
+  ;;    :bind (:map lsp-mode-map
+  ;;           ("<f5>" . dap-debug)
+  ;;           ("M-<f5>" . dap-hydra))
+  ;;    :hook ((dap-mode . dap-ui-mode)
+  ;;      (dap-session-created . (lambda (&_rest) (dap-hydra)))
+  ;;      (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+
+
   (use-package dap-mode
-    :ensure t
-    :after (lsp-mode)
-    :functions dap-hydra/nil
-    :config
-   ;; (require 'dap-java)
-    :bind (:map lsp-mode-map
-           ("<f5>" . dap-debug)
-           ("M-<f5>" . dap-hydra))
-    :hook ((dap-mode . dap-ui-mode)
-      (dap-session-created . (lambda (&_rest) (dap-hydra)))
-      (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
+  ;; Uncomment the config below if you want all UI panes to be hidden by default!
+  ;; :custom
+  ;; (lsp-enable-dap-auto-configure nil)
+  ;; :config
+  ;; (dap-ui-mode 1)
+
+  :config
+  ;; Set up Node debugging
+  (require 'dap-node)
+  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
+
+  ;; Bind `C-c l d` to `dap-hydra` for easy access
+  (general-define-key
+    :keymaps 'lsp-mode-map
+    :prefix lsp-keymap-prefix
+    "d" '(dap-hydra t :wk "debugger")))
+  (require 'dap-python)
+
+
+  (dap-register-debug-template "My App"
+  (list :type "python"
+        :args "-i"
+        :cwd nil
+        :env '(("DEBUG" . "1"))
+        :target-module (expand-file-name "~/src/myapp/.env/bin/myapp")
+        :request "launch"
+        :name "My App"))
+
+
 
 #+END_SRC
 
@@ -855,28 +897,31 @@
 #+END_SRC
 * Other stuff
 #+BEGIN_SRC emacs-lisp
-      (set-background-color "black")
-                 (load-theme 'xresources t)
-                 (load-theme 'xresources t)
-                 (load-theme 'xresources t)
-      (defun my-set-background-color (&optional frame)
-      "Set custom background color."
-      (with-selected-frame (or frame (selected-frame))
-        (set-background-color "black")))
+     (set-background-color "black")
+                (load-theme 'xresources t)
+                (load-theme 'xresources t)
+                (load-theme 'xresources t)
+     (defun my-set-background-color (&optional frame)
+     "Set custom background color."
+     (with-selected-frame (or frame (selected-frame))
+       (set-background-color "black")))
 
-    ;; Run later, for client frames...
-    (add-hook 'after-make-frame-functions 'my-set-background-color)
-    ;; ...and now, for the initial frame.
-    (my-set-background-color)
+   ;; Run later, for client frames...
+   (add-hook 'after-make-frame-functions 'my-set-background-color)
+   ;; ...and now, for the initial frame.
+   (my-set-background-color)
 
-    (setq redisplay-dont-pause t
-    scroll-margin 10
-    scroll-step 1
-    scroll-conservatively 1000
-    scroll-preserve-screen-position 1)
+   (setq redisplay-dont-pause t
+   scroll-margin 10
+   scroll-step 1
+   scroll-conservatively 1000
+   scroll-preserve-screen-position 1)
 
-   '(elcord-mode t nil (elcord))
-   '(elcord-use-major-mode-as-main-icon t)
+  '(elcord-mode t nil (elcord))
+  '(elcord-use-major-mode-as-main-icon t)
+
+;  ; Autosave on lose focus
+;  (add-hook 'focus-out-hook (lambda () (interactive) (save-some-buffers t)))
 
   #+END_SRC
 
@@ -909,26 +954,36 @@
 #+END_SRC
 * Evil
 #+BEGIN_SRC emacs-lisp
-  (setq evil-disable-insert-state-bindings t)
-  (evil-mode 1)
-  (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
-  (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
+    (setq evil-disable-insert-state-bindings t)
+    (evil-mode 1)
+    (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
+    (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
 
-  (define-key evil-visual-state-map (kbd "C-e") 'evil-end-of-line)
-  (define-key evil-visual-state-map (kbd "C-a") 'evil-beginning-of-line)
+    (define-key evil-visual-state-map (kbd "C-e") 'evil-end-of-line)
+    (define-key evil-visual-state-map (kbd "C-a") 'evil-beginning-of-line)
 
-  (define-key evil-normal-state-map (kbd "/") 'swiper)
-  (define-key evil-visual-state-map (kbd "/") 'swiper)
+    (define-key evil-normal-state-map (kbd "/") 'swiper)
+    (define-key evil-visual-state-map (kbd "/") 'swiper)
 
-  (define-key evil-motion-state-map (kbd "SPC") nil)
-  (define-key evil-motion-state-map (kbd "RET") nil)
-  (define-key evil-motion-state-map (kbd "TAB") nil)
+    (define-key evil-motion-state-map (kbd "SPC") nil)
+    (define-key evil-motion-state-map (kbd "RET") nil)
+    (define-key evil-motion-state-map (kbd "TAB") nil)
 
-  (define-key evil-motion-state-map (kbd "SPC")   #'lsp-ui-doc-show)
-  (define-key evil-motion-state-map (kbd "S-SPC")   #'lsp-ui-doc-hide) ; "end show"
+    (define-key evil-motion-state-map (kbd "SPC")   #'lsp-ui-doc-show)
+    (define-key evil-motion-state-map (kbd "S-SPC")   #'lsp-ui-doc-hide) ; "end show"
 
-  (global-linum-mode 1)
+   (define-key evil-motion-state-map (kbd "C-.") 'shrink-window-horizontally)
+   (define-key evil-normal-state-map (kbd "C-.") 'shrink-window-horizontally)
+   (define-key evil-insert-state-map (kbd "C-.") 'shrink-window-horizontally)
 
+   (define-key evil-motion-state-map (kbd "C-,") 'enlarge-window-horizontally)
+   (define-key evil-insert-state-map (kbd "C-,") 'enlarge-window-horizontally)
+   (define-key evil-normal-state-map (kbd "C-,") 'enlarge-window-horizontally)
+
+
+    (global-linum-mode 1)
+
+  (with-eval-after-load 'evil (evil-set-initial-state 'vterm-mode 'insert))
 
   #+END_SRC
 * NASM Assember
@@ -941,4 +996,14 @@
   (require 'erc-image)
   (add-to-list 'erc-modules 'image)
   (erc-update-modules)
+#+END_SRC
+* Vterm
+#+BEGIN_SRC emacs-lisp
+  (use-package vterm
+       :config)
+
+  (use-package vterm-toggle
+       :config
+  (global-set-key [M-f2] 'vterm-toggle-cd))
+
 #+END_SRC
