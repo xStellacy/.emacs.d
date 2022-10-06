@@ -1,223 +1,192 @@
 #+STARTUP: overview
 * Interface Tweaks
 #+BEGIN_SRC emacs-lisp
-     (save-place-mode 1)
-           (fset 'yes-or-no-p 'y-or-n-p)
-           (global-set-key (kbd "<f6>") 'revert-buffer)
-           (global-set-key (kbd "M-o") 'evil-window-next)
-           (global-set-key (kbd "C-c c") 'recompile)
-           (setq compilation-ask-about-save nil)
-           (global-set-key (kbd "C-.") 'shrink-window-horizontally)
-           (global-set-key (kbd "C-,") 'enlarge-window-horizontally)
-           (global-set-key (kbd "C->") 'shrink-window)
-           (global-set-key (kbd "C-<") 'enlarge-window)
-           (global-set-key (kbd "M-0") 'kill-buffer-and-window)
-           (setq quickrun-focus-p nil)
-           (setq even-window-heights nil)
-      ;; (setq compile-command "g++ main.cpp && ./a.out")
-       (setq compile-command "gcc main.c && ./a.out")
-       (setq compilation-scroll-output nil)
-       (setq org-hide-emphasis-markers t)
-       (setq markdown-toggle-inline-images t)
-     (setq markdown-display-remote-images t)
-      '(compilation-scroll-output t)
-    (setq ring-bell-function 'ignore)
-    (setq rainbow-mode t)
-    (global-visual-line-mode 1)
-    (setq global-linum-mode t)
-  (set-face-attribute 'default nil :font "JetBrains Mono" :height 110)
- (global-set-key (kbd "C-x g") 'ripgrep-regexp)
+  (save-place-mode 1)
+  (tool-bar-mode -1)
+  (menu-bar-mode -1)
+  (scroll-bar-mode -1)
+  (fset 'yes-or-no-p 'y-or-n-p)
+  (global-visual-line-mode 1)
+  '(compilation-scroll-output t)
+  '(smooth-scroll-margin 5)
+
+                                          ; Some Keybindings
+  (global-set-key (kbd "<f6>") 'revert-buffer)
+  (global-set-key (kbd "M-o") 'evil-window-next)
+  (global-set-key (kbd "C-c c") 'recompile)
+  (global-set-key (kbd "C-.") 'shrink-window-horizontally)
+  (global-set-key (kbd "C-,") 'enlarge-window-horizontally)
+  (global-set-key (kbd "C->") 'shrink-window)
+  (global-set-key (kbd "C-<") 'enlarge-window)
+  (global-set-key (kbd "M-0") 'kill-buffer-and-window)
+  (global-set-key (kbd "C-x g") 'ripgrep-regexp)
+
+  (setq compile-command "gcc main.c && ./a.out")
+  (setq quickrun-focus-p nil)
+  (setq even-window-heights nil)
+  (setq compilation-ask-about-save nil)
+  (setq compilation-scroll-output nil)
+  (setq org-hide-emphasis-markers t)
+  (setq markdown-toggle-inline-images t)
+  (setq markdown-display-remote-images t)
+  (setq ring-bell-function 'ignore)
+  (setq rainbow-mode t)
+  (setq global-linum-mode t)
+  (setq outline-hide-sublevels 1)
+  (setq visible-bell 1)
 #+END_SRC
 * Transparency and Theme
 #+BEGIN_SRC emacs-lisp
-
-           (set-frame-parameter (selected-frame) 'alpha-background 0.95)
-
-
-      (setq modus-themes-load-vivendi t
-            modus-themes-italic-constructs t
-            modus-themes-bold-constructs nil
-            modus-themes-mixed-fonts nil
-;;            modus-themes-subtle-line-numbers nil
-            modus-themes-intense-mouseovers nil
-            modus-themes-deuteranopia t
-            modus-themes-tabs-accented t
-            modus-themes-variable-pitch-ui nil
-            modus-themes-inhibit-reload t ; only applies to `customize-set-variable' and related
-
-            modus-themes-fringes nil ; {nil,'subtle,'intense}
-            modus-themes-lang-checkers nil
-
-            modus-themes-mode-line '(accented borderless (padding . 4) (height . 0.9))         
-            modus-themes-markup '(background italic)
-            modus-themes-syntax nil
-            modus-themes-hl-line '(accented)
-            modus-themes-paren-match '(bold intense)
-            modus-themes-links '(neutral-underline background)
-            modus-themes-box-buttons '(variable-pitch flat faint 0.9)
-            modus-themes-prompts '(intense bold)
-
-            modus-themes-completions '((matches . (extrabold))
-                                       (selection . (semibold accented))
-                                       (popup . (accented intense)))
-
-            modus-themes-mail-citations nil ; {nil,'intense,'faint,'monochrome}
-
-            modus-themes-region '(bg-only no-extend)
-          
-            modus-themes-diffs 'desaturated
-
-            modus-themes-org-blocks 'gray-background ; {nil,'gray-background,'tinted-background}
-
-            modus-themes-org-agenda ; this is an alist: read the manual or its doc string
-            '((header-block . (variable-pitch 1.3))
-              (header-date . (grayscale workaholic bold-today 1.1))
-              (event . (accented varied))
-              (scheduled . uniform)
-              (habit . traffic-light))
-
-            modus-themes-headings ; this is an alist: read the manual or its doc string
-            '((1 . (overline background variable-pitch 1.3))
-              (2 . (rainbow overline 1.1))
-              (t . (semibold))))
-
-;;      (require 'modus-themes)
-;;      (modus-themes-load-themes)
-
-  ;;    (modus-themes-load-vivendi)
-           (load-theme 'xresources t)
-
+  (set-frame-parameter (selected-frame) 'alpha-background 0.95)
+  (set-face-attribute 'default nil :font "JetBrains Mono" :height 100)
+  (load-theme 'xresources t)
 #+END_SRC
 
 #+RESULTS:
 : t
 * Try
 #+BEGIN_SRC emacs-lisp
-(use-package try
-	:ensure t)
+  (use-package try
+    :ensure t)
 #+END_SRC
-
 * Which Key
-  Brings up some help
+Brings up some help
   #+BEGIN_SRC emacs-lisp
-  (use-package which-key
-	:ensure t
-	:config
-	(which-key-mode))
+    (use-package which-key
+      :ensure t
+      :config
+      (which-key-mode))
   #+END_SRC
 * Dashboard
 #+BEGIN_SRC emacs-lisp
-(use-package dashboard
-  :ensure t
-  :config
-;; Set the banner
-(setq dashboard-startup-banner [3])
-(setq dashboard-init-info " ")
-(setq dashboard-set-footer nil)
-(setq dashboard-center-content t)
-(setq dashboard-set-file-icons t)
-(setq dashboard-items '((recents  . 5)
-                        (bookmarks . 5)))
-  (dashboard-setup-startup-hook))
+  (use-package dashboard
+    :ensure t
+    :config
+                                          ; Set the banner
+    (setq dashboard-startup-banner [3])
+    (setq dashboard-init-info " ")
+    (setq dashboard-set-footer nil)
+    (setq dashboard-center-content t)
+    (setq dashboard-set-file-icons t)
+    (setq dashboard-items '((recents  . 5)
+                            (bookmarks . 5)))
+    (dashboard-setup-startup-hook))
  #+end_src
 * Org mode
   #+BEGIN_SRC emacs-lisp
+    '(org-block ((t (:inherit fixed-pitch))))
+    '(org-code ((t (:inherit (shadow fixed-pitch)))))
+    '(org-document-info ((t (:foreground "dark orange"))))
+    '(org-document-info-keyword ((t (:inherit (shadow fixed-pitch)))))
+    '(org-indent ((t (:inherit (org-hide fixed-pitch)))))
+    '(org-level-1 ((t (:inherit outline-1 :height 1.4))))
+    '(org-level-2 ((t (:inherit outline-2 :height 1.3))))
+    '(org-level-3 ((t (:inherit outline-3 :height 1.2))))
+    '(org-level-4 ((t (:inherit outline-4 :height 1.1))))
+    '(org-level-5 ((t (:inherit outline-5 :height 1.0))))
+    '(org-link ((t (:foreground "royal blue" :underline t))))
+    '(org-meta-line ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    '(org-property-value ((t (:inherit fixed-pitch))) t)
+    '(org-special-keyword ((t (:inherit (font-lock-comment-face fixed-pitch)))))
+    '(org-table ((t (:inherit fixed-pitch :foreground "#83a598"))))
+    '(org-tag ((t (:inherit (shadow fixed-pitch) :weight bold :height 0.8))))
+    '(org-verbatim ((t (:inherit (shadow fixed-pitch)))))
+
     (setq org-return-follows-link  t)
-        (use-package org-bullets
-        :ensure t
-        :config
-        :config
-        (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
-        (add-hook 'org-mode-hook 'org-display-inline-images)
+    (use-package org-bullets
+      :ensure t
+      :config
+      :config
+      (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1))))
+    (add-hook 'org-mode-hook 'org-display-inline-images)
 
     (custom-set-variables
      '(org-export-html-postamble nil)
-      ;; '(org-hide-leading-stars t)
-      '(org-startup-folded (quote overview))
-      '(org-startup-indented t)
-      )
+     '(org-hide-leading-stars t)
+     '(org-startup-folded (quote overview))
+     '(org-startup-indented t)
+     '(org-startup-folded 'overview)
+     )
 
-     (setq org-file-apps
-       (append '(
-         ("\\.pdf\\'" . "evince %s")
-         ) org-file-apps ))
+    (setq org-file-apps
+          (append '(
+                    ("\\.pdf\\'" . "evince %s")
+                    ) org-file-apps ))
 
-         (global-set-key "\C-ca" 'org-agenda)
-         (global-set-key (kbd "C-c l") #'org-store-link)
+    (global-set-key "\C-ca" 'org-agenda)
+    (global-set-key (kbd "C-c l") #'org-store-link)
 
-           (setq org-agenda-custom-commands
-           '(("c" "Simple agenda view"
-           ((agenda "")
-           (alltodo "")))))
+    (setq org-agenda-custom-commands
+          '(("c" "Simple agenda view"
+             ((agenda "")
+              (alltodo "")))))
 
-       (defadvice org-capture-finalize
-       (after delete-capture-frame activate)
-     "Advise capture-finalize to close the frame"
-     (if (equal "capture" (frame-parameter nil 'name))
-     (delete-frame)))
+    (defadvice org-capture-finalize
+        (after delete-capture-frame activate)
+      "Advise capture-finalize to close the frame"
+      (if (equal "capture" (frame-parameter nil 'name))
+          (delete-frame)))
 
-     (defadvice org-capture-destroy
-         (after delete-capture-frame activate)
-     "Advise capture-destroy to close the frame"
-     (if (equal "capture" (frame-parameter nil 'name))
-     (delete-frame)))
+    (defadvice org-capture-destroy
+        (after delete-capture-frame activate)
+      "Advise capture-destroy to close the frame"
+      (if (equal "capture" (frame-parameter nil 'name))
+          (delete-frame)))
 
-     (use-package noflet
-     :ensure t )
-     (defun make-capture-frame ()
-     "Create a new frame and run org-capture."
-     (interactive)
-     (make-frame '((name . "capture")))
-     (select-frame-by-name "capture")
-     (delete-other-windows)
-     (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
-         (org-capture)))
-     (setq org-src-window-setup 'current-window)
+    (use-package noflet
+      :ensure t )
+    (defun make-capture-frame ()
+      "Create a new frame and run org-capture."
+      (interactive)
+      (make-frame '((name . "capture")))
+      (select-frame-by-name "capture")
+      (delete-other-windows)
+      (noflet ((switch-to-buffer-other-window (buf) (switch-to-buffer buf)))
+        (org-capture)))
+    (setq org-src-window-setup 'current-window)
 
     (require 'color)
     (set-face-attribute 'org-block nil :background
-        (color-darken-name
-         (face-attribute 'default :background) 1))
+                        (color-darken-name
+                         (face-attribute 'default :background) 1))
     (setq org-image-actual-width nil)
 
     (add-hook 'org-mode-hook (lambda ()
-       (setq buffer-face-mode-face '(:family "Open Sans" :height 140))
-       (setq line-spacing 6)
-       (buffer-face-mode)))
+                               (setq buffer-face-mode-face '(:family "Open Sans" :height 130))
+                               (setq line-spacing 6)
+                               (buffer-face-mode)))
 
-     (defun my-buffer-face-mode-variable ()
-       "Set font to a variable width (proportional) fonts in current buffer"
-       (interactive)
-       (setq buffer-face-mode-face '(:family "Open Sans" :height 140 :width semi-condensed))
-       (buffer-face-mode))
+    (defun my-buffer-face-mode-variable ()
+      "Set font to a variable width (proportional) fonts in current buffer"
+      (interactive)
+      (setq buffer-face-mode-face '(:family "Open Sans" :height 130 :width semi-condensed))
+      (buffer-face-mode))
 
-     ;; Use monospaced font faces in current buffer
-     (defun my-buffer-face-mode-fixed ()
-       "Sets a fixed width (monospace) font in current buffer"
-       (interactive)
-       (setq buffer-face-mode-face '(:family "Open Sans" :height 140))
-       (buffer-face-mode))
+    ;; Use monospaced font faces in current buffer
+    (defun my-buffer-face-mode-fixed ()
+      (interactive)
+      (setq buffer-face-mode-face '(:family "Open Sans" :height 130))
+      (buffer-face-mode))
 
-     ;; Set default font faces for Info and ERC modes
-     (add-hook 'org-mode-hook 'my-buffer-face-mode-variable)
+                                            ; Set default font faces for Info and ERC modes
+    (add-hook 'org-mode-hook 'my-buffer-face-mode-variable)
 
     (defvar my-hide-org-meta-line-p nil)
-      (defun my-hide-org-meta-line ()
-        (interactive)
-        (setq my-hide-org-meta-line-p t)
-        (set-face-attribute 'org-meta-line nil
-                            :foreground (face-attribute 'default :background)))
-      (defun my-show-org-meta-line ()
-        (interactive)
-        (setq my-hide-org-meta-line-p nil)
-        (set-face-attribute 'org-meta-line nil :foreground nil))
-      (defun my-toggle-org-meta-line ()
-        (interactive)
-        (if my-hide-org-meta-line-p
-            (my-show-org-meta-line) (my-hide-org-meta-line)))
-      (add-hook 'org-tree-slide-play-hook #'my-hide-org-meta-line)
-      (add-hook 'org-tree-slide-stop-hook #'my-show-org-meta-line)
-
+    (defun my-hide-org-meta-line ()
+      (interactive)
+      (setq my-hide-org-meta-line-p t)
+      (set-face-attribute 'org-meta-line nil
+                          :foreground (face-attribute 'default :background)))
+    (defun my-show-org-meta-line ()
+      (interactive)
+      (setq my-hide-org-meta-line-p nil)
+      (set-face-attribute 'org-meta-line nil :foreground nil))
+    (defun my-toggle-org-meta-line ()
+      (interactive)
+      (if my-hide-org-meta-line-p
+          (my-show-org-meta-line) (my-hide-org-meta-line)))
+    (add-hook 'org-tree-slide-play-hook #'my-hide-org-meta-line)
+    (add-hook 'org-tree-slide-stop-hook #'my-show-org-meta-line)
 
     (use-package org-roam
       :ensure t
@@ -232,10 +201,10 @@
           "%?"
           :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
           :unnarrowed t)
-            ("l" "programming language" plain
-             "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n* Reference:\n\n"
-             :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
-             :unnarrowed t)))         
+         ("l" "programming language" plain
+          "* Characteristics\n\n- Family: %?\n- Inspired by: \n\n* Reference:\n\n"
+          :if-new (file+head "%<%Y%m%d%H%M%S>-${slug}.org" "#+title: ${title}\n")
+          :unnarrowed t)))         
       :bind (("C-c n l" . org-roam-buffer-toggle)
              ("C-c n f" . org-roam-node-find)             
              ("C-c n i" . org-roam-node-insert)
@@ -247,31 +216,16 @@
       :config
       (org-roam-setup))
 
+                                            ; **Org download; Implements ability to drag and drop images into org-mode.**
+    (use-package org-download
+      :ensure t
+      :config
+      (add-hook 'dired-mode-hook 'org-download-enable)
+      (setq-default org-download-image-dir "~/.emacs.d/images")
+      (setq org-download-image-html-width '320))
 
-            ;; Org download; Implements ability to drag and drop images into org-mode.
-        (use-package org-download
-          :ensure t
-          :config
-          ;; Add support to dired
-          (add-hook 'dired-mode-hook 'org-download-enable)
-          ;; org-download default directory
-           (setq-default org-download-image-dir "~/.emacs.d/images")
-          (setq org-download-image-html-width '320))
-
-
-     ; (use-package mixed-pitch
-     ;   :hook
-     ;   (org-mode . mixed-pitch-mode)
-     ;   :config
-     ;   (set-face-attribute 'default nil :font "Open Sans"  :height 140)
-     ;   (set-face-attribute 'fixed-pitch nil :font "Open Sans")
-     ;   (set-face-attribute 'variable-pitch nil :font "Open Sans"))
-     ;;  (add-hook 'mixed-pitch-mode-hook #'solaire-mode-reset)
-
-
-
- (setq org-agenda-files '("~/org-roam"))
-
+    (setq org-agenda-files '("~/org-roam"))
+    
   #+END_SRC
 
   #+RESULTS:
@@ -279,95 +233,92 @@
 * Ace windows/buffer-move for easy window switching
   #+BEGIN_SRC emacs-lisp
     (use-package ace-window
-    :ensure t
-    :init
-    (progn
-    (global-set-key (kbd "C-x o") 'ace-window)
-      (custom-set-faces
-       '(aw-leading-char-face
-         ((t (:inherit ace-jump-face-foreground :height 3.0)))))
-      ))
+      :ensure t
+      :init
+      (progn
+        (global-set-key (kbd "C-x o") 'ace-window)
+        (custom-set-faces
+         '(aw-leading-char-face
+           ((t (:inherit ace-jump-face-foreground :height 3.0)))))
+        ))
 
     (use-package buffer-move
       :bind (
-         ("<C-S-left>" . buf-move-left)
-         ("<C-S-down>" . buf-move-down)
-         ("<C-S-up>" . buf-move-up)
-         ("<C-S-right>" . buf-move-right))
-    )
-
+             ("<C-S-left>" . buf-move-left)
+             ("<C-S-down>" . buf-move-down)
+             ("<C-S-up>" . buf-move-up)
+             ("<C-S-right>" . buf-move-right))
+      )
   #+END_SRC
-
-* Swiper / Ivy / Counsel / Smex
+* Swiper / Ivy / Counsel
   Swiper gives us a really efficient incremental search with regular expressions
   and Ivy / Counsel replace a lot of ido or helms completion functionality
   #+BEGIN_SRC emacs-lisp
+    (use-package counsel
+      :ensure t
+      :bind
+      (("M-y" . counsel-yank-pop)
+       :map ivy-minibuffer-map
+       ("M-y" . ivy-next-line)))
 
-             (use-package counsel
-          :ensure t
-            :bind
-            (("M-y" . counsel-yank-pop)
-             :map ivy-minibuffer-map
-             ("M-y" . ivy-next-line)))
+    (use-package ivy
+      :ensure t
+      :diminish (ivy-mode)
+      :bind (("C-x b" . ivy-switch-buffer))
+      :config
+      (ivy-mode 1)
+      (setq ivy-use-virtual-buffers t)
+      (setq ivy-display-style 'fancy))
 
-
-            (use-package ivy
-            :ensure t
-            :diminish (ivy-mode)
-            :bind (("C-x b" . ivy-switch-buffer))
-            :config
-            (ivy-mode 1)
-            (setq ivy-use-virtual-buffers t)
-            (setq ivy-display-style 'fancy))
-
-
-            (use-package swiper
-            :ensure t
-            :bind (("C-s" . swiper)
-                   ("C-r" . swiper)
-                   ("C-c C-r" . ivy-resume)
-                   ("C-x C-f" . counsel-find-file))
-            :config
-            (progn
-              (ivy-mode 1)
-              (setq ivy-use-virtual-buffers t)
-              (setq ivy-display-style 'fancy)
-              (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
-              ))
-
-
-        (use-package smex
-          :ensure t
-          :config
-          (global-set-key (kbd "M-x") 'helm-smex)
-        (global-set-key (kbd "M-X") 'smex-major-mode-commands))
-
-    (global-set-key (kbd "C-x C-f") #'helm-find-files)
-    (helm-mode 1)
-
+    (use-package swiper
+      :ensure t
+      :bind (("C-s" . swiper)
+             ("C-r" . swiper)
+             ("C-c C-r" . ivy-resume)
+             ("C-x C-f" . counsel-find-file))
+      :config
+      (progn
+        (ivy-mode 1)
+        (setq ivy-use-virtual-buffers t)
+        (setq ivy-display-style 'fancy)
+        (define-key read-expression-map (kbd "C-r") 'counsel-expression-history)
+        ))
   #+END_SRC
-
 * Avy - navigate by searching for a letter on the screen and jumping to it
   #+BEGIN_SRC emacs-lisp
-  (use-package avy
-  :ensure t
-  :bind ("M-s" . avy-goto-word-1)) ;; changed from char as per jcs
+    (use-package avy
+      :ensure t
+      :bind ("M-s" . avy-goto-word-1))
   #+END_SRC
 * Flycheck
   #+BEGIN_SRC emacs-lisp
     (use-package flycheck
       :ensure t
       :init
+      '(flycheck-c/c++-gcc-executable "/usr/bin/g++")
+      '(flycheck-checkers
+        '(c/c++-gcc lsp ada-gnat asciidoctor asciidoc awk-gawk bazel-buildifier c/c++-cppcheck cfengine chef-foodcritic coffee coffee-coffeelint coq css-csslint css-stylelint cuda-nvcc cwl d-dmd dockerfile-hadolint elixir-credo emacs-lisp emacs-lisp-checkdoc ember-template erlang-rebar3 erlang eruby-erubis eruby-ruumba fortran-gfortran go-gofmt go-golint go-vet go-build go-test go-errcheck go-unconvert go-staticcheck groovy haml handlebars haskell-stack-ghc haskell-ghc haskell-hlint html-tidy javascript-eslint javascript-jshint javascript-standard json-jsonlint json-python-json json-jq jsonnet less less-stylelint llvm-llc lua-luacheck lua markdown-markdownlint-cli markdown-mdl nix nix-linter opam perl perl-perlcritic php php-phpmd php-phpcs processing proselint protobuf-protoc protobuf-prototool pug puppet-parser puppet-lint python-flake8 python-pylint python-pycompile python-pyright python-mypy r-lintr racket rpm-rpmlint rst-sphinx rst ruby-rubocop ruby-standard ruby-reek ruby-rubylint ruby ruby-jruby rust-cargo rust rust-clippy scala scala-scalastyle scheme-chicken scss-lint scss-stylelint sass/scss-sass-lint sass scss sh-bash sh-posix-dash sh-posix-bash sh-zsh sh-shellcheck slim slim-lint sql-sqlint systemd-analyze tcl-nagelfar terraform terraform-tflint tex-chktex tex-lacheck texinfo textlint typescript-tslint verilog-verilator vhdl-ghdl xml-xmlstarlet xml-xmllint yaml-jsyaml yaml-ruby yaml-yamllint))
+      '(flycheck-clang-args nil)
+      '(flycheck-clang-include-path '("/usr/lib/" "/usr/include/"))
+      '(flycheck-clang-includes nil)
+      '(flycheck-clang-ms-extensions t)
+      '(flycheck-clang-standard-library nil)
+      '(flycheck-disabled-checkers '(c/c++-clang))
+      '(flycheck-gcc-args nil)
+      '(flycheck-gcc-include-path nil)
+      '(global-flycheck-mode t)
+      '(lsp-clangd-version "13.0.0")
+      '(lsp-clients-clangd-library-directories '("/usr"))
+      '(lsp-clients-pylsp-library-directories '("/home/stellacy/.local/bin/"))
+      '(lsp-ui-doc-include-signature t)
       (global-flycheck-mode t))
-
   #+END_SRC
 * Yasnippet
   #+BEGIN_SRC emacs-lisp
     (use-package yasnippet
       :ensure t
       :init
-        (yas-global-mode 1))
-
+      (yas-global-mode 1))
   #+END_SRC
 * Undo Tree
   #+BEGIN_SRC emacs-lisp
@@ -378,123 +329,95 @@
       (global-undo-tree-mode 1)
       (global-set-key (kbd "C-u") 'undo-tree-visualizer-toggle-timestamps)
       (global-undo-tree-mode))
-
   #+END_SRC
 * Misc packages
   #+BEGIN_SRC emacs-lisp
-
-      ; Highlights the current cursor line
-      (global-hl-line-mode t)
-      (set-face-background hl-line-face "gray13")
-      (set-face-background 'hl-line "grey13")
-      ; flashes the cursor's line when you scroll
-      (use-package beacon
+                                            ; Highlights the current cursor line
+    (global-hl-line-mode t)
+    '(hl-line ((t nil)))
+    (set-face-background hl-line-face "gray13")
+    (set-face-background 'hl-line "grey13")
+                                            ; flashes the cursor's line when you scroll
+    (use-package beacon
       :ensure t
       :config
       (beacon-mode 1)
       )
-  
-      ; expand the marked region in semantic increments (negative prefix to reduce region)
-      (use-package expand-region
+                                            ; Eexpand the marked region in semantic increments (negative prefix to reduce region)
+    (use-package expand-region
       :ensure t
       :config
       (global-set-key (kbd "C-=") 'er/expand-region))
 
     (setq save-interprogram-paste-before-kill t)
-
-    (global-auto-revert-mode 1) ;; you might not want this
-    (setq auto-revert-verbose nil) ;; or this
+    (setq auto-revert-verbose nil)
+    (global-auto-revert-mode 1)
     (global-set-key (kbd "<f6>") 'revert-buffer)
-
     (require 'org-tempo)
-  
   #+END_SRC
-  
 * iedit and narrow / widen dwim
-
   #+BEGIN_SRC emacs-lisp
-  ; mark and edit all copies of the marked region simultaniously.
-  (use-package iedit
-  :ensure t)
-  
-  ; if you're windened, narrow to the region, if you're narrowed, widen
-  ; bound to C-x n
-  (defun narrow-or-widen-dwim (p)
-  "If the buffer is narrowed, it widens. Otherwise, it narrows intelligently.
-  Intelligently means: region, org-src-block, org-subtree, or defun,
-  whichever applies first.
-  Narrowing to org-src-block actually calls `org-edit-src-code'.
-  
-  With prefix P, don't widen, just narrow even if buffer is already
-  narrowed."
-  (interactive "P")
-  (declare (interactive-only))
-  (cond ((and (buffer-narrowed-p) (not p)) (widen))
-  ((region-active-p)
-  (narrow-to-region (region-beginning) (region-end)))
-  ((derived-mode-p 'org-mode)
-  ;; `org-edit-src-code' is not a real narrowing command.
-  ;; Remove this first conditional if you don't want it.
-  (cond ((ignore-errors (org-edit-src-code))
-  (delete-other-windows))
-  ((org-at-block-p)
-  (org-narrow-to-block))
-  (t (org-narrow-to-subtree))))
-  (t (narrow-to-defun))))
-  
-  ;; (define-key endless/toggle-map "n" #'narrow-or-widen-dwim)
-  ;; This line actually replaces Emacs' entire narrowing keymap, that's
-  ;; how much I like this command. Only copy it if that's what you want.
-;;  (define-key ctl-x-map "n" #'narrow-or-widen-dwim)
-;; (require 'cl)
+                                            ; Mark and edit all copies of the marked region simultaniously.
+    (use-package iedit
+      :ensure t)
+
+    (defun narrow-or-widen-dwim (p)
+      (interactive "P")
+      (declare (interactive-only))
+      (cond ((and (buffer-narrowed-p) (not p)) (widen))
+            ((region-active-p)
+             (narrow-to-region (region-beginning) (region-end)))
+            ((derived-mode-p 'org-mode)
+             (cond ((ignore-errors (org-edit-src-code))
+                    (delete-other-windows))
+                   ((org-at-block-p)
+                    (org-narrow-to-block))
+                   (t (org-narrow-to-subtree))))
+            (t (narrow-to-defun))))
   #+END_SRC
 
 
   #+RESULTS:
   : narrow-or-widen-dwim
-
 * Web Mode
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
     :ensure t
     :config
-	 (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
-	 (setq web-mode-engines-alist
-	       '(("django"    . "\\.html\\'")))
-	 (setq web-mode-ac-sources-alist
-	       '(("css" . (ac-source-css-property))
-		 ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
-(setq web-mode-enable-auto-closing t))
-(setq web-mode-enable-auto-quoting t) ; this fixes the quote problem I mentioned
-
-
+    (add-to-list 'auto-mode-alist '("\\.html?\\'" . web-mode))
+    (setq web-mode-engines-alist
+          '(("django"    . "\\.html\\'")))
+    (setq web-mode-ac-sources-alist
+          '(("css" . (ac-source-css-property))
+            ("html" . (ac-source-words-in-buffer ac-source-abbrev))))
+    (setq web-mode-enable-auto-closing t))
+  (setq web-mode-enable-auto-quoting t)
 #+END_SRC
 
 #+RESULTS:
 : t
-
 * Hydra
 #+BEGIN_SRC emacs-lisp
   (use-package hydra
     :ensure hydra
     :init
     (global-set-key
-    (kbd "C-x t")
-	    (defhydra toggle (:color blue)
-	      "toggle"
-	      ("a" abbrev-mode "abbrev")
-	      ("s" flyspell-mode "flyspell")
-	      ("d" toggle-debug-on-error "debug")
-	      ("c" fci-mode "fCi")
-	      ("f" auto-fill-mode "fill")
-	      ("t" toggle-truncate-lines "truncate")
-	      ("w" whitespace-mode "whitespace")
-	      ("q" nil "cancel")))
+     (kbd "C-x t")
+     (defhydra toggle (:color blue)
+       "toggle"
+       ("a" abbrev-mode "abbrev")
+       ("s" flyspell-mode "flyspell")
+       ("d" toggle-debug-on-error "debug")
+       ("c" fci-mode "fCi")
+       ("f" auto-fill-mode "fill")
+       ("t" toggle-truncate-lines "truncate")
+       ("w" whitespace-mode "whitespace")
+       ("q" nil "cancel")))
     (global-set-key
      (kbd "C-x j")
      (defhydra gotoline
        ( :pre (linum-mode 1)
-	      :post (linum-mode -1))
+         :post (linum-mode -1))
        "goto"
        ("t" (lambda () (interactive)(move-to-window-line-top-bottom 0)) "top")
        ("b" (lambda () (interactive)(move-to-window-line-top-bottom -1)) "bottom")
@@ -517,80 +440,54 @@
        ("o" org-clock-out "Clock-Out") ; you might also want (setq org-log-note-clock-out t)
        ("j" org-clock-goto "Clock Goto") ; global visit the clocked task
        ("c" org-capture "Capture") ; Don't forget to define the captures you want http://orgmode.org/manual/Capture.html
-	     ("l" (or )rg-capture-goto-last-stored "Last Capture"))
-
+       ("l" (or )rg-capture-goto-last-stored "Last Capture"))
      ))
 #+END_SRC
 
 #+RESULTS:
-
-;;* c++
-;;#+begin_src emacs-lisp
-;;  (use-package ggtags
-;;    :ensure t
-;;    :config
-;;    (add-hook 'c-mode-common-hook
-;;              (lambda ()
-;;                (when (derived-mode-p 'c-mode 'c++-mode)
-;;                  (ggtags-mode 1)))))
-;;
-;;#+end_src
-
-#+RESULTS:
-: t
-
 * IBUFFER
 #+BEGIN_SRC emacs-lisp
 (global-set-key (kbd "C-x C-b") 'ibuffer)
- (setq ibuffer-saved-filter-groups
-	(quote (("default"
-		 ("dired" (mode . dired-mode))
-		 ("org" (name . "^.*org$"))
-	       
-		 ("web" (or (mode . web-mode) (mode . js2-mode)))
-		 ("shell" (or (mode . eshell-mode) (mode . shell-mode)))
-		 ("mu4e" (or
+(setq ibuffer-saved-filter-groups
+(quote (("default"
+("dired" (mode . dired-mode))
+("org" (name . "^.*org$"))
 
-                (mode . mu4e-compose-mode)
-                (name . "\*mu4e\*")
-                ))
-		 ("programming" (or
-				 (mode . python-mode)
-				 (mode . c++-mode)))
-		 ("emacs" (or
-			   (name . "^\\*scratch\\*$")
-			   (name . "^\\*Messages\\*$")))
-		 ))))
- (add-hook 'ibuffer-mode-hook
-	    (lambda ()
-	      (ibuffer-auto-mode 1)
-	      (ibuffer-switch-to-saved-filter-groups "default")))
+("web" (or (mode . web-mode) (mode . js2-mode)))
+("shell" (or (mode . eshell-mode) (mode . shell-mode)))
+("mu4e" (or
 
- ;; don't show these
-					  ;(add-to-list 'ibuffer-never-show-predicates "zowie")
- ;; Don't show filter groups if there are no buffers in that group
- (setq ibuffer-show-empty-filter-groups nil)
+(mode . mu4e-compose-mode)
+(name . "\*mu4e\*")
+))
+("programming" (or
+(mode . python-mode)
+(mode . c++-mode)))
+("emacs" (or
+(name . "^\\*scratch\\*$")
+(name . "^\\*Messages\\*$")))
+))))
+(add-hook 'ibuffer-mode-hook
+(lambda ()
+(ibuffer-auto-mode 1)
+(ibuffer-switch-to-saved-filter-groups "default")))
 
- ;; Don't ask for confirmation to delete marked buffers
- (setq ibuffer-expert t)
-
+(setq ibuffer-show-empty-filter-groups nil)
+(setq ibuffer-expert t)
 #+END_SRC emacs-lisp
-
 * Emmet mode
 #+BEGIN_SRC emacs-lisp
   (use-package emmet-mode
-  :ensure t
-  :config
-  (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-  (add-hook 'web-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
-  (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
-  )
-
+    :ensure t
+    :config
+    (add-hook 'sgml-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+    (add-hook 'web-mode-hook 'emmet-mode) ;; Auto-start on any markup modes
+    (add-hook 'css-mode-hook  'emmet-mode) ;; enable Emmet's css abbreviation.
+    )
 #+END_SRC
 
 #+RESULTS:
 : t
-
 * Treemacs
 #+BEGIN_SRC emacs-lisp
   (use-package treemacs
@@ -617,64 +514,56 @@
     :bind
     (:map global-map
           ([f9]        . treemacs)
-;;          ("M-0"       . treemacs-select-window)
-        ))
+          ;;          ("M-0"       . treemacs-select-window)
+          ))
   (use-package treemacs-projectile
     :defer t
     :ensure t
     :config
     (setq treemacs-header-function #'treemacs-projectile-create-header)
-)
-
+    )
 #+END_SRC
 #+RESULTS:
-
 * auto-yasnippet
 ;;#+begin_src emacs-lisp
 ;;    (use-package auto-yasnippet
 ;;      (yas-global-mode 1)
 ;;      :ensure t)
-#+end_src
-
+;;#+end_src
 #+RESULTS:
 * LSP
 #+BEGIN_SRC emacs-lisp
-    (use-package lsp-mode
-      :ensure t
-      :config
-      :commands lsp
-      :custom
-     ;; :require lsp-mode
-      (lsp-auto-guess-root nil)
-      (setq lsp t)
-      (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
-      :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
-      :hook ((python-mode c-mode java-mode c++-mode php-mode) . lsp))
-    (add-hook 'prog-mode-hool #'lsp)
+  (use-package lsp-mode
+    :ensure t
+    :config
+    :commands lsp
+    :custom
+    (lsp-auto-guess-root nil)
+    (setq lsp t)
+    (lsp-prefer-flymake nil) ; Use flycheck instead of flymake
+    :bind (:map lsp-mode-map ("C-c C-f" . lsp-format-buffer))
+    :hook ((python-mode c-mode java-mode c++-mode php-mode) . lsp))
+  (add-hook 'prog-mode-hool #'lsp)
 
-
-  ;; Setup for Python development
-  
+                                          ; Setup for Python development
   (use-package python-mode
-  :ensure t
-  :hook (python-mode . lsp-deferred)
-  :custom
-  (python-shell-interpreter "python3")
-  (dap-python-executable "python3")
-  ;;(dap-python-debugger 'debugpy)
-  :config
-  (require 'dap-python))
-
-
+    :ensure t
+    :hook (python-mode . lsp-deferred)
+    :custom
+    (python-shell-interpreter "python3")
+    (dap-python-executable "python3")
+    (dap-python-debugger 'debugpy)
+    :config
+    (require 'dap-python))
 
   (use-package lsp-ui
     :ensure t
-    ;; gets started by lsp-mode
+                                          ; Gets started by lsp-mode
     :commands lsp-ui-mode
     :config
-    ;; display information about symbols on the current line as we type?
+                                          ; Display information about symbols on the current line as we type?
     (setq lsp-ui-sideline-enable t)
-    ;; indicate if lsp-ui-doc should be rendered on hover at every symbol. if nil
+    ;; Indicate if lsp-ui-doc should be rendered on hover at every symbol. if nil
     ;; `(lsp-ui-doc-show)` can still be used to open the docs for a symbol.
     (setq lsp-ui-doc-enable nil) ;; set to t to automatically show documentation on keyboard cursor position
     (setq lsp-ui-doc-max-width 70)
@@ -694,316 +583,308 @@
     (define-key lsp-mode-map (kbd "C-c z")   #'lsp-ui-doc-focus-frame)
     )
 
+  '(lsp-ui-doc-background ((t (:background nil))))
+  '(lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
 #+END_SRC
 
 #+RESULTS:
-
 * Company
 #+BEGIN_SRC emacs-lisp
-(use-package company
-:ensure t
-:config
-(setq company-idle-delay 0)
-(setq company-minimum-prefix-length 1)
-
-(global-company-mode t)
-)
-
+  (use-package company
+    :ensure t
+    :config
+    (setq company-idle-delay 0)
+    (setq company-minimum-prefix-length 1)
+    '(company-clang-use-compile-flags-txt nil)
+    (global-company-mode t)
+    )
 #+END_SRC
 
 #+RESULTS:
 : t
-
 * Functions
-
 #+BEGIN_SRC emacs-lisp
-  
-    ;; font scaling
-    (use-package default-text-scale
-      :ensure t
-     :config
-      (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
-      (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
-
+  ; Font scaling
+  (use-package default-text-scale
+    :ensure t
+    :config
+    (global-set-key (kbd "C-M-=") 'default-text-scale-increase)
+    (global-set-key (kbd "C-M--") 'default-text-scale-decrease))
 #+END_SRC
 
 #+RESULTS:
 : t
-
 * Dap mode
 #+BEGIN_SRC emacs-lisp
-  ;;  (use-package dap-mode
-  ;;    :ensure t
-  ;;    :after (lsp-mode)
-  ;;    :functions dap-hydra/nil
-  ;;    :config
-  ;;    :bind (:map lsp-mode-map
-  ;;           ("<f5>" . dap-debug)
-  ;;           ("M-<f5>" . dap-hydra))
-  ;;    :hook ((dap-mode . dap-ui-mode)
-  ;;      (dap-session-created . (lambda (&_rest) (dap-hydra)))
-  ;;      (dap-terminated . (lambda (&_rest) (dap-hydra/nil)))))
-
-
   (use-package dap-mode
-  ;; Uncomment the config below if you want all UI panes to be hidden by default!
-  ;; :custom
-  ;; (lsp-enable-dap-auto-configure nil)
-  ;; :config
-  ;; (dap-ui-mode 1)
+    :config
+    ;; Set up Node debugging
+    (require 'dap-node)
+    (dap-node-setup) ;; Automatically installs Node debug adapter if needed
 
-  :config
-  ;; Set up Node debugging
-  (require 'dap-node)
-  (dap-node-setup) ;; Automatically installs Node debug adapter if needed
-
-  ;; Bind `C-c l d` to `dap-hydra` for easy access
-  (general-define-key
-    :keymaps 'lsp-mode-map
-    :prefix lsp-keymap-prefix
-    "d" '(dap-hydra t :wk "debugger")))
+    ;; Bind `C-c l d` to `dap-hydra` for easy access
+    (general-define-key
+     :keymaps 'lsp-mode-map
+     :prefix lsp-keymap-prefix
+     "d" '(dap-hydra t :wk "debugger")))
   (require 'dap-python)
 
-
   (dap-register-debug-template "My App"
-  (list :type "python"
-        :args "-i"
-        :cwd nil
-        :env '(("DEBUG" . "1"))
-        :target-module (expand-file-name "~/src/myapp/.env/bin/myapp")
-        :request "launch"
-        :name "My App"))
-
-
-
+                               (list :type "python"
+                                     :args "-i"
+                                     :cwd nil
+                                     :env '(("DEBUG" . "1"))
+                                     :target-module (expand-file-name "~/src/myapp/.env/bin/myapp")
+                                     :request "launch"
+                                     :name "My App"))
 #+END_SRC
 
 #+RESULTS:
-
 * Helm
 #+begin_src emacs-lisp
-    (use-package helm-lsp)
-  :ensure t
+  (use-package helm-lsp
+    :ensure t)
 #+end_src
 
 #+RESULTS:
 : t
-
 * ewal
 #+begin_src emacs-lisp
+  (use-package ewal
+    :init
+    (setq ewal-use-built-in-always-p nil
+          ewal-use-built-in-on-failure-p t
+          ewal-built-in-palette "sexy-material"))
 
-   (use-package ewal
-      :init
-      (setq ewal-use-built-in-always-p nil
-            ewal-use-built-in-on-failure-p t
-            ewal-built-in-palette "sexy-material"))
+  (use-package smex
+    :ensure t
+    :config
+    (global-set-key (kbd "M-x") 'helm-smex)
+    (global-set-key (kbd "M-X") 'smex-major-mode-commands))
 
+  (global-set-key (kbd "C-x C-f") #'helm-find-files)
+  (helm-mode 1)
 #+end_src
 
 #+RESULTS:
 : t
-
-
-#+begin_src emacs-lisp
-  (setq lsp-java-autobuild-enabled t)
-
-#+end_src
-
 * Set Emacs backup/undo/autosave folder
 #+begin_src emacs-lisp
   (setq backup-directory-alist '(("" . "~/.emacs.d/cache/backup/")))
   (setq undo-tree-history-directory-alist '(("." . "~/.emacs.d/cache/undo/")))
   (setq auto-save-file-name-transforms `((".*" "~/.emacs.d/cache/autosave/" t)))
 #+end_src
-* PHP
-#+begin_src emacs-lisp
-;  (use-package 'flymake-php
-;  :ensure t
-;  :config)
-  (add-hook 'php-mode-hook 'flymake-php-load)
-
-  (add-hook 'php-mode-hook
-            '(lambda ()
-              ; (auto-complete-mode t)
-               (require 'ac-php)
-               (setq ac-sources '(ac-source-php))
-               (yas-global-mode 1)
-
-               (define-key php-mode-map (kbd "C-]")
-                 'ac-php-find-symbol-at-point)
-               (define-key php-mode-map (kbd "C-t")
-                 'ac-php-location-stack-back)))
-
-
-
-
-#+end_src
 * Multi-web mode
 #+begin_src emacs-lisp
-    (require 'multi-web-mode)
+  (use-package multi-web-mode
+    :ensure t)
+  (require 'multi-web-mode)
   (setq mweb-default-major-mode 'html-mode)
   (setq mweb-tags
-    '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
-      (js-mode  "<script[^>]*>" "</script>")
-      (css-mode "<style[^>]*>" "</style>")))
+        '((php-mode "<\\?php\\|<\\? \\|<\\?=" "\\?>")
+          (js-mode  "<script[^>]*>" "</script>")
+          (css-mode "<style[^>]*>" "</style>")))
   (setq mweb-filename-extensions '("php" "htm" "html" "ctp"
                                    "phtml" "php4" "php5"))
 #+end_src
-
 * Rust
 #+begin_src emacs-lisp
   (add-hook 'rust-mode-hook
-          (lambda () (setq indent-tabs-mode nil)))
-
-  (setq rust-format-on-save t)
+            (lambda () (setq indent-tabs-mode nil)))
 
   (add-hook 'rust-mode-hook
-          (lambda () (prettify-symbols-mode)))
+            (lambda () (prettify-symbols-mode)))
 
-;; (define-key rust-mode (kbd "C-c C-c") 'rust-run)
-
+  (setq rust-format-on-save t)
 #+end_src
 * EAF
-#+BEGIN_SRC emacs-lisp
-      (use-package eaf
-        :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
-        :custom
-        ; See https://github.com/emacs-eaf/emacs-application-framework/wiki/Customization
-        (eaf-browser-continue-where-left-off t)
-        (eaf-browser-enable-adblocker t)
-        (browse-url-browser-function 'eaf-open-browser)
-        (defalias 'browse-web #'eaf-open-browser)
-        (eaf-bind-key scroll_up "C-n" eaf-pdf-viewer-keybinding)
-        (eaf-bind-key scroll_down "C-p" eaf-pdf-viewer-keybinding)
-        (eaf-bind-key take_photo "p" eaf-camera-keybinding)
-        (eaf-bind-key nil "M-q" eaf-browser-keybinding)) ;; unbind, see more in the Wiki
-        :config
-        (require 'eaf-browser)
-(require 'eaf-terminal)
-(require 'eaf-system-monitor)
-(require 'eaf-git)
-(require 'eaf-markdown-previewer)
-(require 'eaf-music-player)
-(require 'eaf-image-viewer)
-(require 'eaf-video-player)
-(require 'eaf-file-sender)
-(require 'eaf-file-manager)
-(require 'eaf-rss-reader)
-(require 'eaf-file-browser)
-(require 'eaf-pdf-viewer)
-(require 'eaf-netease-cloud-music)
-(require 'eaf-org-previewer)
-
-#+END_SRC
+;;#+BEGIN_SRC emacs-lisp
+;;      (use-package eaf
+;;        :load-path "~/.emacs.d/site-lisp/emacs-application-framework"
+;;        :custom
+;;        ; See https://github.com/emacs-eaf/emacs-application-framework/wiki/Customization
+;;        (eaf-browser-continue-where-left-off t)
+;;        (eaf-browser-enable-adblocker t)
+;;        (browse-url-browser-function 'eaf-open-browser)
+;;        (defalias 'browse-web #'eaf-open-browser)
+;;        (eaf-bind-key scroll_up "C-n" eaf-pdf-viewer-keybinding)
+;;        (eaf-bind-key scroll_down "C-p" eaf-pdf-viewer-keybinding)
+;;        (eaf-bind-key take_photo "p" eaf-camera-keybinding)
+;;        (eaf-bind-key nil "M-q" eaf-browser-keybinding)) ;; unbind, see more in the Wiki
+;;        :config
+;;        (require 'eaf-browser)
+;;(require 'eaf-terminal)
+;;(require 'eaf-system-monitor)
+;;(require 'eaf-git)
+;;(require 'eaf-markdown-previewer)
+;;(require 'eaf-music-player)
+;;(require 'eaf-image-viewer)
+;;(require 'eaf-video-player)
+;;(require 'eaf-file-sender)
+;;(require 'eaf-file-manager)
+;;(require 'eaf-rss-reader)
+;;(require 'eaf-file-browser)
+;;(require 'eaf-pdf-viewer)
+;;(require 'eaf-netease-cloud-music)
+;;(require 'eaf-org-previewer)
+;;
+;;#+END_SRC
 * Other stuff
 #+BEGIN_SRC emacs-lisp
-     (set-background-color "black")
-                (load-theme 'xresources t)
-                (load-theme 'xresources t)
-                (load-theme 'xresources t)
-     (defun my-set-background-color (&optional frame)
-     "Set custom background color."
-     (with-selected-frame (or frame (selected-frame))
-       (set-background-color "black")))
+  (set-background-color "black")
+  (load-theme 'xresources t)
+  (load-theme 'xresources t)
+  (load-theme 'xresources t)
+  (defun my-set-background-color (&optional frame)
+    "Set custom background color."
+    (with-selected-frame (or frame (selected-frame))
+      (set-background-color "black")))
 
-   ;; Run later, for client frames...
-   (add-hook 'after-make-frame-functions 'my-set-background-color)
-   ;; ...and now, for the initial frame.
-   (my-set-background-color)
+  ;; Run later, for client frames...
+  (add-hook 'after-make-frame-functions 'my-set-background-color)
+  ;; ...and now, for the initial frame.
+  (my-set-background-color)
 
-   (setq redisplay-dont-pause t
-   scroll-margin 10
-   scroll-step 1
-   scroll-conservatively 1000
-   scroll-preserve-screen-position 1)
+  (setq redisplay-dont-pause t
+        scroll-margin 10
+        scroll-step 1
+        scroll-conservatively 1000
+        scroll-preserve-screen-position 1)
 
   '(elcord-mode t nil (elcord))
   '(elcord-use-major-mode-as-main-icon t)
-
-;  ; Autosave on lose focus
-;  (add-hook 'focus-out-hook (lambda () (interactive) (save-some-buffers t)))
-
+  '(elcord-boring-buffers-regexp-list
+    '("\\*Messages\\*" "\\*dashboard\\*" "Custom" "Fundamental"))
+  '(elcord-display-buffer-details nil)
+  '(elcord-editor-icon "emacs_pen_icon")
+  '(elcord-mode t nil (elcord))
+  '(elcord-quiet t)
+  '(elcord-refresh-rate 1)
+  '(elcord-use-major-mode-as-main-icon nil)                       '(package-selected-packages
+                                                                    '(tern xref-js2 js2-refactor js2-mode python-pytest lsp-python-ms flymake-flycheck erc-yt erc-youtube passmm helm-pass jabber pinentry haskell-tng-mode general pylint python-mode lsp-pyright eterm-256color vterm-toggle flycheck-pkg-config soundklaus ivy-spotify netease-cloud-music masm-mode flymake-nasm nasm-mode password-vault pass sideline-flycheck helm-flycheck helm-smex ripgrep helm-org-ql mixed-pitch evil-tabs centaur-tabs buffer-move rainbow-mode ccls eldoc-cmake cpp-auto-include cpputils-cmake markdown-preview-mode dired-sidebar dired-collapse dired-narrow dired-ranger dired-subtree dired-rainbow dired-filter dired-hacks-utils counsel-projectile lsp-haskell consult-org-roam org-roam-ui evil elcord org-download org-pdftools pdf-tools w3m bitlbee sxiv simple-mpc emms org-roam vterm haskell-mode focus-autosave-mode skewer-mode treemacs-tab-bar treemacs-persp cargo auto-complete-rst cargo-mode rust-mode yasnippet-snippets xresources-theme which-key web-mode use-package undo-tree try treemacs-projectile shell-switcher quickrun php-eldoc ox-reveal org-bullets noflet multi-web-mode modus-themes magit lsp-ui jedi ivy-avy iedit htmlize helm-lsp git-timemachine git-gutter ggtags flymake-phpstan flymake-phpcs flymake-php flycheck expand-region ewal emmet-mode elpy elfeed default-text-scale dashboard counsel company-phpactor company-php better-shell beacon auto-yasnippet ac-php))
   #+END_SRC
-
 * Dired
 #+BEGIN_SRC emacs-lisp
-       (use-package dired-sidebar
-        :bind
-        (:map global-map
-              ([f8]        . dired-sidebar-jump-to-sidebar)
-              ([C-f8]        . dired-sidebar-hide-sidebar)          
-            )
-                   :ensure t
-        :config
-         :init
-                  (add-to-list 'load-path "~/")
-         (add-hook 'dired-sidebar-mode-hook
-                 (lambda ()
-                   (unless (file-remote-p default-directory)
-                     (auto-revert-mode))))
-      ;;   (push 'toggle-window-split dired-sidebar-toggle-hidden-commands)
-      ;; (push 'rotate-windows dired-sidebar-toggle-hidden-commands)
-
-       (setq dired-sidebar-subtree-line-prefix "__")
+  (use-package dired-sidebar
+    :bind
+    (:map global-map
+          ([f8]        . dired-sidebar-jump-to-sidebar)
+          ([C-f8]        . dired-sidebar-hide-sidebar)          
+          )
+    :ensure t
+    :config
+    :init
+    (add-to-list 'load-path "~/")
+    (add-hook 'dired-sidebar-mode-hook
+              (lambda ()
+                (unless (file-remote-p default-directory)
+                  (auto-revert-mode))))
+    (setq dired-sidebar-subtree-line-prefix "__")
     ;;   (setq dired-sidebar-theme 'icons)
-       (setq dired-sidebar-use-term-integration t)
-       (setq dired-sidebar-use-custom-font t)
-            :config
-       (require 'dired-sidebar))
-
+    (setq dired-sidebar-use-term-integration t)
+    (setq dired-sidebar-use-custom-font t)
+    :config
+    (require 'dired-sidebar))
 #+END_SRC
 * Evil
 #+BEGIN_SRC emacs-lisp
-    (setq evil-disable-insert-state-bindings t)
-    (evil-mode 1)
-    (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
-    (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
+  (setq evil-disable-insert-state-bindings t)
+  (evil-mode 1)
+  (define-key evil-normal-state-map (kbd "C-e") 'evil-end-of-line)
+  (define-key evil-normal-state-map (kbd "C-a") 'evil-beginning-of-line)
 
-    (define-key evil-visual-state-map (kbd "C-e") 'evil-end-of-line)
-    (define-key evil-visual-state-map (kbd "C-a") 'evil-beginning-of-line)
+  (define-key evil-visual-state-map (kbd "C-e") 'evil-end-of-line)
+  (define-key evil-visual-state-map (kbd "C-a") 'evil-beginning-of-line)
 
-    (define-key evil-normal-state-map (kbd "/") 'swiper)
-    (define-key evil-visual-state-map (kbd "/") 'swiper)
+  (define-key evil-normal-state-map (kbd "/") 'swiper)
+  (define-key evil-visual-state-map (kbd "/") 'swiper)
 
-    (define-key evil-motion-state-map (kbd "SPC") nil)
-    (define-key evil-motion-state-map (kbd "RET") nil)
-    (define-key evil-motion-state-map (kbd "TAB") nil)
+  (define-key evil-motion-state-map (kbd "SPC") nil)
+  (define-key evil-motion-state-map (kbd "RET") nil)
+  (define-key evil-motion-state-map (kbd "TAB") nil)
 
-    (define-key evil-motion-state-map (kbd "SPC")   #'lsp-ui-doc-show)
-    (define-key evil-motion-state-map (kbd "S-SPC")   #'lsp-ui-doc-hide) ; "end show"
+  (define-key evil-motion-state-map (kbd "SPC")   #'lsp-ui-doc-show)
+  (define-key evil-motion-state-map (kbd "S-SPC")   #'lsp-ui-doc-hide)
 
-   (define-key evil-motion-state-map (kbd "C-.") 'shrink-window-horizontally)
-   (define-key evil-normal-state-map (kbd "C-.") 'shrink-window-horizontally)
-   (define-key evil-insert-state-map (kbd "C-.") 'shrink-window-horizontally)
+  (define-key evil-motion-state-map (kbd "C-.") 'shrink-window-horizontally)
+  (define-key evil-normal-state-map (kbd "C-.") 'shrink-window-horizontally)
+  (define-key evil-insert-state-map (kbd "C-.") 'shrink-window-horizontally)
 
-   (define-key evil-motion-state-map (kbd "C-,") 'enlarge-window-horizontally)
-   (define-key evil-insert-state-map (kbd "C-,") 'enlarge-window-horizontally)
-   (define-key evil-normal-state-map (kbd "C-,") 'enlarge-window-horizontally)
+  (define-key evil-motion-state-map (kbd "C-,") 'enlarge-window-horizontally)
+  (define-key evil-insert-state-map (kbd "C-,") 'enlarge-window-horizontally)
+  (define-key evil-normal-state-map (kbd "C-,") 'enlarge-window-horizontally)
 
+  (evil-set-initial-state 'vterm-mode 'emacs)
+  (evil-set-initial-state 'pass-mode 'emacs)
 
-    (global-linum-mode 1)
-
-  (with-eval-after-load 'evil (evil-set-initial-state 'vterm-mode 'insert))
-
+  '(evil-undo-system 'undo-tree)
+  (global-linum-mode 1)
   #+END_SRC
 * NASM Assember
 #+BEGIN_SRC emacs-lisp
-(require 'nasm-mode)
-(add-to-list 'auto-mode-alist '("\\.\\(asm\\|s\\)$" . nasm-mode))
+  (use-package nasm-mode
+    :ensure t
+    :config
+    (require 'nasm-mode)
+    (add-to-list 'auto-mode-alist '("\\.\\(asm\\|s\\)$" . nasm-mode)))
 #+END_SRC
 * ERC
 #+BEGIN_SRC emacs-lisp
-  (require 'erc-image)
-  (add-to-list 'erc-modules 'image)
-  (erc-update-modules)
+  (use-package erc-image
+    :ensure t
+    :config
+    (require 'auth-source)
+    (require 'erc-image)
+    (add-to-list 'erc-modules 'image)
+    (erc-update-modules)
+    (setq auth-sources '((:source "~/.authinfo.gpg")))
+    (setq auth-sources '("~/.authinfo.gpg"))
+    (setq auth-sources '(password-store)))
+  '(erc-services-mode t)
+  '(erc-use-auth-source-for-nickserv-password t)
 #+END_SRC
 * Vterm
 #+BEGIN_SRC emacs-lisp
   (use-package vterm
-       :config)
+    :ensure t
+    :config)
 
   (use-package vterm-toggle
-       :config
-  (global-set-key [M-f2] 'vterm-toggle-cd))
+    :ensure t
+    :config
+    (global-set-key (kbd "M-z") 'vterm-toggle-cd)
+    )
+#+END_SRC
+* GPG
+#+BEGIN_SRC emacs-lisp
+;; (setq epa-file-encrypt-to "stellacy@stellacy.com") 
 
+ ;; (setq jabber-account-list ...)
+ ;; (setq my-secret-password "stellacy")
+(setq auth-source-debug t)
+#+END_SRC
+
+#+RESULTS:
+: t
+* Javascript
+#+BEGIN_SRC emacs-lisp
+  (require 'js2-mode)
+  (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+                                          ; Better imenu
+  (add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+
+  (require 'js2-refactor)
+  (require 'xref-js2)
+
+  (add-hook 'js2-mode-hook #'js2-refactor-mode)
+  (js2r-add-keybindings-with-prefix "C-c C-r")
+  (define-key js2-mode-map (kbd "C-k") #'js2r-kill)
+
+  ;; js-mode (which js2 is based on) binds "M-." which conflicts with xref, so
+  ;; unbind it.
+  (define-key js-mode-map (kbd "M-.") nil)
+
+  (add-hook 'js2-mode-hook (lambda ()
+                             (add-hook 'xref-backend-functions #'xref-js2-xref-backend nil t)))
 #+END_SRC
